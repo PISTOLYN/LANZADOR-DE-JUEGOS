@@ -113,7 +113,11 @@ ipcMain.handle("arcade:pick-cover", async () => {
   fs.copyFileSync(source,destination);
   return {filePath:pathToFileURL(destination).href};
 });
-ipcMain.handle("arcade:quit-launcher", async () => { app.quit(); return { ok:true }; });
+ipcMain.handle("arcade:quit-launcher", async () => {
+  // Cierre directo y explícito del lanzador instalado.
+  app.exit(0);
+  return { ok:true };
+});
 ipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
 ipcMain.handle("arcade:set-exit-key", async (_event,key) => registerExitShortcut(key));
 
