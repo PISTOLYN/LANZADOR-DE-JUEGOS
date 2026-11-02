@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ARCADE LAUNCHER</title><link rel="stylesheet" href="style.css?v=20261102g"><link rel="stylesheet" href="tema-arcade.css?v=20261102g"></head>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ARCADE LAUNCHER</title><link rel="stylesheet" href="style.css?v=20261102h"><link rel="stylesheet" href="tema-arcade.css?v=20261102h"></head>
 <body><header><b>▣ ARCADE <i>LAUNCHER</i></b><button id="settingsBtn" aria-label="Configuración">⚙</button></header>
 <main><p class="eyebrow">BIENVENIDO A TU COLECCIÓN ARCADE</p><h1>SELECCIONA TU <i>JUEGO</i></h1>
 
@@ -18,10 +18,9 @@
 <label>Selecciona la tecla para la flecha izquierda <input id="leftKeyInput" data-key="left" type="text" value="ARROWLEFT" readonly></label>
 <!-- NUEVO: requiere soporte en app.js (ver instrucciones). Si no lo vas a usar, borra esta línea -->
 <label>Selecciona la tecla para seleccionar el juego <input id="selectKeyInput" data-key="select" type="text" value="ENTER" readonly></label>
-<label>Selecciona la tecla para salir de Configuración y regresar a la sala <input id="quitKeyInput" data-key="quit" type="text" value="ESCAPE" readonly></label>
 <p>Haz clic en una casilla y presiona cualquier tecla para asignarla. También puedes usar flechas, Enter, Escape y Espacio.</p><button id="resetControls" type="button">RESTAURAR TECLAS ORIGINALES</button></div>
 <div class="key-settings"><h3>APARIENCIA Y SONIDOS</h3><label>FONDO DE LA SALA <input id="backgroundFile" type="file" accept="image/*"></label><label>SONIDO AL CAMBIAR DE JUEGO <input id="changeSoundToggle" type="checkbox" checked></label><label>VOLUMEN DEL SONIDO <input id="changeSoundVolume" type="range" min="0" max="100" value="45"></label><button id="resetAppearance" type="button">RESTAURAR FONDO Y SONIDO ORIGINAL</button></div>
 
-<label class="startup-option"><span class="exit-key-option">Selecciona la tecla para regresar a la sala <input id="exitKeyInput" type="text" value="F10" maxlength="12" placeholder="F10"></span><small>Esta tecla cierra el juego activo y regresa al lanzador.</small></label><label class="startup-option"><input type="checkbox" id="autoStartToggle"> <span>Iniciar al encender Windows</span><small>Abre ARCADE LAUNCHER automáticamente cuando inicies sesión en tu PC.</small></label><p><button id="importBtn">IMPORTAR JSON</button> <button id="exportBtn">EXPORTAR JSON</button> <button id="saveSettings">GUARDAR CAMBIOS</button><input id="importFile" type="file" accept=".json" hidden></p><small>Agrega una imagen de portada desde BUSCAR PORTADA y selecciona el EXE correspondiente.</small></div></div>
+<label class="startup-option"><span class="exit-key-option">Selecciona la tecla para regresar a la sala <input id="exitKeyInput" type="text" value="F10" maxlength="12" placeholder="F10"></span><small>Esta tecla cierra el juego activo y regresa al lanzador.</small></label><label class="startup-option"><input type="checkbox" id="autoStartToggle"> <span>Iniciar al encender Windows</span><small>Abre ARCADE LAUNCHER automáticamente cuando inicies sesión en tu PC.</small></label><p><button id="saveSettings">GUARDAR CAMBIOS</button></p><small>Agrega una imagen de portada desde BUSCAR PORTADA y selecciona el EXE correspondiente.</small></div></div>
 
 <script src="tema.js"></script><script src="app.js"></script></body></html>
