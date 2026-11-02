@@ -20,12 +20,11 @@ function registerExitShortcut(accelerator) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1280, height: 820, minWidth: 900, minHeight: 620, fullscreen: true, fullscreen: true, fullscreen: true,
+    width: 1280, height: 820, minWidth: 900, minHeight: 620, fullscreen: true,
     backgroundColor: "#080d19", autoHideMenuBar: true,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
   mainWindow = win;
-  mainWindow=win;
   win.loadFile("index.html");
 }
 
@@ -42,15 +41,15 @@ ipcMain.handle("arcade:pick-exe", async () => {
 ipcMain.handle("arcade:pick-cover", async () => {
   const result = await dialog.showOpenDialog({ title:"Selecciona la portada", properties:["openFile"], filters:[{name:"Imágenes",extensions:["png","jpg","jpeg","webp","bmp"]}] });
   if (result.canceled || !result.filePaths.length) return { canceled:true };
-  const source=result.filePaths[0], dir=path.join(app.getPath("userData"),"covers"); fs.mkdirSync(dir,{recursive:true});
-  const destination=path.join(dir,Date.now()+path.extname(source).toLowerCase()); fs.copyFileSync(source,destination); return {filePath:destination};
+  const source=result.filePaths[0], dir=path.join(app.getPath("userData"),"covers");
+  fs.mkdirSync(dir,{recursive:true});
+  const destination=path.join(dir,Date.now()+path.extname(source).toLowerCase());
+  fs.copyFileSync(source,destination);
+  return {filePath:"file:///"+destination.replace(/\\\\/g,"/")};
 });
 ipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
 ipcMain.handle("arcade:set-exit-key", async (_event,key) => registerExitShortcut(key));
-ipcMain.handle("arcade:pick-cover",async()=>{const r=await dialog.showOpenDialog({title:"Selecciona la portada",properties:["openFile"],filters:[{name:"Imágenes",extensions:["png","jpg","jpeg","webp","bmp"]}]});if(r.canceled||!r.filePaths.length)return {canceled:true};const src=r.filePaths[0],dir=path.join(app.getPath("userData"),"covers");fs.mkdirSync(dir,{recursive:true});const dest=path.join(dir,Date.now()+path.extname(src).toLowerCase());fs.copyFileSync(src,dest);return {filePath:"file:///"+dest.replace(/\\/g,"/")}});
-ipcMain.handle("arcade:get-exit-key",async()=>exitAccelerator);
-ipcMain.handle("arcade:set-exit-key",async(_e,k)=>registerExitShortcut(k));
-ipcMain.handle("arcade:pick-cover",async()=>{const r=await dialog.showOpenDialog({title:"Selecciona la portada",properties:["openFile"],filters:[{name:"Imágenes",extensions:["png","jpg","jpeg","webp","bmp"]}]});if(r.canceled||!r.filePaths.length)return {canceled:true};const src=r.filePaths[0],dir=path.join(app.getPath("userData"),"covers");fs.mkdirSync(dir,{recursive:true});const dest=path.join(dir,Date.now()+path.extname(src).toLowerCase());fs.copyFileSync(src,dest);return {filePath:dest}});
+
 ipcMain.handle("arcade:get-auto-start", async () => {
   return app.getLoginItemSettings().openAtLogin;
 });
@@ -84,5 +83,4 @@ ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
 
 app.whenReady().then(() => { registerExitShortcut("F10"); createWindow(); app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); }); });
 app.on("will-quit", () => globalShortcut.unregisterAll());
-app.on("will-quit",()=>globalShortcut.unregisterAll());
 app.on("window-all-closed", () => { if (process.platform !== "darwin") app.quit(); });
