@@ -32,15 +32,26 @@ $("exportBtn").onclick=()=>{read();download("arcade-games.json",JSON.stringify({
 $("importFile").onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text()),a=Array.isArray(d)?d:d.games;if(!Array.isArray(a)||!a.length||!a.every(g=>g&&typeof g.title==="string"&&typeof g.exePath==="string"))throw 0;games=a;editor()}catch(_){alert("JSON no válido")}e.target.value=""};
 $("exitKeyInput").addEventListener("keydown",e=>{e.preventDefault();if(["Escape","Enter"," "].includes(e.key))return;$("exitKeyInput").value=e.key.toUpperCase()});
 
+let recordingKeyInput=null;
 document.querySelectorAll("[data-key]").forEach(input=>{
-  input.addEventListener("click",()=>{document.querySelectorAll("[data-key]").forEach(x=>x.classList.remove("recording"));input.focus();input.classList.add("recording");input.value="PRESIONA UNA TECLA"});
+  input.addEventListener("click",()=>{
+    document.querySelectorAll("[data-key]").forEach(x=>x.classList.remove("recording"));
+    recordingKeyInput=input;
+    input.classList.add("recording");
+    input.value="PRESIONA UNA TECLA";
+    input.focus();
+  });
 });
 document.addEventListener("keydown",e=>{
-  const input=document.activeElement?.matches?.("[data-key]")?document.activeElement:null;
-  if(!input)return;
-  e.preventDefault();e.stopImmediatePropagation();
+  if(!recordingKeyInput)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
   if(["Shift","Control","Alt","Meta"].includes(e.key))return;
-  input.dataset.keyValue=e.key;input.value=showKey(e.key);input.classList.remove("recording");input.blur();
+  const input=recordingKeyInput;
+  input.dataset.keyValue=e.key;
+  input.value=showKey(e.key);
+  input.classList.remove("recording");
+  recordingKeyInput=null;
+  input.blur();
 },true);
 $("resetControls").onclick=()=>{controls={quit:"Escape",left:"ArrowLeft",right:"ArrowRight",select:"Enter"};["quit","left","right","select"].forEach(k=>{const input=$(({quit:"quitKeyInput",left:"leftKeyInput",right:"rightKeyInput",select:"selectKeyInput"})[k]);input.dataset.keyValue=controls[k];input.value=showKey(controls[k])})};
 document.onkeydown=e=>{if($("settingsModal").classList.contains("show")){if(normalizeKey(e.key)===normalizeKey(controls.quit)&&!e.repeat){e.preventDefault();$("settingsModal").classList.remove("show")}return}if(normalizeKey(e.key)===normalizeKey(controls.right)){e.preventDefault();move(1)}else if(normalizeKey(e.key)===normalizeKey(controls.left)){e.preventDefault();move(-1)}else if(normalizeKey(e.key)===normalizeKey(controls.select)){e.preventDefault();launch()}else if(normalizeKey(e.key)===normalizeKey(controls.quit)){e.preventDefault();if(window.arcadeAPI?.quitLauncher)window.arcadeAPI.quitLauncher();else if(confirm("¿Deseas salir del lanzador?"))window.close()} };
