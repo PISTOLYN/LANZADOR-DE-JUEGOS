@@ -692,3 +692,106 @@ main .stage .game-card #cover.has-cover small{display:none!important}
   main .stage .game-card{flex-basis:86%!important;width:86%!important;height:72%!important}
   #settingsModal .dialog.settings{width:98%!important;height:97%!important;max-height:97%!important}
 }
+
+
+/* AJUSTE SOLICITADO: configuracion dentro del marco y sala realmente ampliada */
+#settingsModal{
+  inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l)!important;
+  padding:1.2%!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+}
+#settingsModal .dialog.settings{
+  width:94%!important;
+  max-width:1180px!important;
+  height:88%!important;
+  max-height:88%!important;
+  margin:auto!important;
+  transform:none!important;
+  overflow:hidden!important;
+}
+#settingsModal .settings .col-izq,
+#settingsModal .settings .col-der{
+  min-height:0!important;
+  max-height:100%!important;
+  overflow-y:auto!important;
+}
+#settingsModal .settings .col-der{padding:48px 22px 18px!important}
+#settingsModal .settings .col-izq{padding:48px 12px 18px!important}
+
+/* La portada queda grande, centrada y con margen uniforme dentro del cuadro */
+main .stage{
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+main .stage .game-card{
+  position:relative!important;
+  inset:auto!important;
+  flex:0 0 94%!important;
+  width:94%!important;
+  max-width:none!important;
+  height:92%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+main .stage .game-card .monitor{
+  position:relative!important;
+  inset:auto!important;
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+}
+main .stage .game-card .monitor-screen,
+main .stage .game-card #cover{
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+}
+main .stage .game-card #cover .cover-art{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+@media(max-width:900px){
+  #settingsModal{inset:5%!important;padding:1%!important}
+  #settingsModal .dialog.settings{width:96%!important;height:92%!important;max-height:92%!important}
+  main .stage .game-card{flex-basis:92%!important;width:92%!important;height:88%!important}
+}
