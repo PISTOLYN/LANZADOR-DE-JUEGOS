@@ -12,13 +12,13 @@
 <div id="loadingScreen" class="overlay"><div class="dialog"><h2>INICIANDO JUEGO<span>...</span></h2><div class="bar"></div><p id="loadingGameName"></p><p>Preparando el juego...</p><button id="cancelLoading">CANCELAR</button></div></div>
 
 <button id="quitLauncherBtn" type="button" title="Salir del lanzador">SALIR ✕</button>
-<div id="settingsModal" class="overlay"><div class="dialog settings"><button id="closeSettings" class="close" type="button" aria-label="Cerrar configuración">✕</button><label id="exitSettingsLabel" for="exitSettingsCheck"><input id="exitSettingsCheck" type="checkbox"> SALIR DE LA CONFIGURACIÓN</label><h2>CONFIGURACIÓN</h2><p>Agrega tus juegos, su portada y la ruta del archivo EXE. La portada aparecerá en la sala.</p><button id="addGameBtn">＋ AGREGAR JUEGO</button><div id="editorList"></div><div class="key-settings"><h3>CONTROLES DEL LANZADOR</h3>
+<div id="settingsModal" class="overlay"><div class="dialog settings"><button id="closeSettings" class="close" type="button" aria-label="Cerrar configuración">✕</button><h2>CONFIGURACIÓN</h2><p>Agrega tus juegos, su portada y la ruta del archivo EXE. La portada aparecerá en la sala.</p><button id="addGameBtn">＋ AGREGAR JUEGO</button><div id="editorList"></div><div class="key-settings"><h3>CONTROLES DEL LANZADOR</h3>
 
 <label>Selecciona la tecla para la flecha derecha <input id="rightKeyInput" data-key="right" type="text" value="ARROWRIGHT" readonly></label>
 <label>Selecciona la tecla para la flecha izquierda <input id="leftKeyInput" data-key="left" type="text" value="ARROWLEFT" readonly></label>
 <!-- NUEVO: requiere soporte en app.js (ver instrucciones). Si no lo vas a usar, borra esta línea -->
 <label>Selecciona la tecla para seleccionar el juego <input id="selectKeyInput" data-key="select" type="text" value="ENTER" readonly></label>
-<label>Selecciona la tecla para salir del menú <input id="quitKeyInput" data-key="quit" type="text" value="ESCAPE" readonly></label>
+<label>Selecciona la tecla para salir de Configuración y regresar a la sala <input id="quitKeyInput" data-key="quit" type="text" value="ESCAPE" readonly></label>
 <p>Haz clic en una casilla y presiona cualquier tecla para asignarla. También puedes usar flechas, Enter, Escape y Espacio.</p><button id="resetControls" type="button">RESTAURAR TECLAS ORIGINALES</button></div>
 <div class="key-settings"><h3>APARIENCIA Y SONIDOS</h3><label>FONDO DE LA SALA <input id="backgroundFile" type="file" accept="image/*"></label><label>SONIDO AL CAMBIAR DE JUEGO <input id="changeSoundToggle" type="checkbox" checked></label><label>VOLUMEN DEL SONIDO <input id="changeSoundVolume" type="range" min="0" max="100" value="45"></label><button id="resetAppearance" type="button">RESTAURAR FONDO Y SONIDO ORIGINAL</button></div>
 
