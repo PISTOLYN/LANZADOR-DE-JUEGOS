@@ -632,3 +632,63 @@ main .stage .game-card #cover .cover-art{
     width:calc(100% - 90px)!important;
   }
 }
+
+
+/* ===== REVISION DE ESCALA Y CENTRADO FINAL ===== */
+main .stage{
+  position:absolute!important;inset:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:auto!important;height:auto!important;padding:0!important;margin:0!important;
+  overflow:hidden!important;
+}
+main .stage .game-card{
+  position:relative!important;inset:auto!important;
+  flex:0 0 88%!important;width:88%!important;max-width:none!important;
+  height:82%!important;min-height:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  margin:0 auto!important;padding:0!important;border:0!important;border-radius:0!important;
+  transform:none!important;box-sizing:border-box!important;background:transparent!important;
+}
+main .stage .game-card .monitor{
+  position:relative!important;inset:auto!important;
+  display:block!important;width:100%!important;max-width:none!important;height:100%!important;
+  margin:0!important;padding:0!important;box-sizing:border-box!important;
+}
+main .stage .game-card .monitor-screen,
+main .stage .game-card #cover{
+  position:absolute!important;inset:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;height:100%!important;min-height:0!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+  box-sizing:border-box!important;overflow:hidden!important;background-color:#070b18!important;
+}
+main .stage .game-card #cover .cover-art{
+  position:absolute!important;inset:0!important;
+  display:block!important;width:100%!important;height:100%!important;
+  max-width:none!important;max-height:none!important;
+  object-fit:contain!important;object-position:center center!important;
+}
+main .stage .game-card #cover.has-cover strong,
+main .stage .game-card #cover.has-cover small{display:none!important}
+
+/* Configuracion: misma distribucion, ventana mucho mas grande */
+#settingsModal{
+  inset:0!important;padding:1.5vw!important;
+  align-items:center!important;justify-content:center!important;
+}
+#settingsModal .dialog.settings{
+  width:97%!important;max-width:none!important;
+  height:96%!important;max-height:96%!important;
+  margin:auto!important;
+}
+#settingsModal .settings .col-izq,
+#settingsModal .settings .col-der{
+  max-height:96%!important;min-height:0!important;
+  overflow-y:auto!important;
+}
+#settingsModal .settings .col-der{padding:58px 26px 24px!important}
+#settingsModal .settings .col-izq{padding:58px 16px 24px!important}
+@media(max-width:900px){
+  main .stage .game-card{flex-basis:86%!important;width:86%!important;height:72%!important}
+  #settingsModal .dialog.settings{width:98%!important;height:97%!important;max-height:97%!important}
+}
