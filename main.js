@@ -12,8 +12,8 @@ let exitAccelerator = "F10";
 const RETURN_BUTTON_HTML = `<!doctype html><html><head><meta charset="utf-8"><style>
 html,body{margin:0;height:100%;background:transparent;overflow:hidden;user-select:none}
 a{display:flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;height:100%;
-  text-decoration:none;font:900 17px "Arial Black",Impact,sans-serif;letter-spacing:.03em;color:#fff;
-  background:linear-gradient(#ffc233,#f08a00);border:3px solid #fff;border-radius:999px;
+  text-decoration:none;font:900 11px "Arial Black",Impact,sans-serif;letter-spacing:.02em;color:#fff;
+  background:linear-gradient(#ffc233,#f08a00);border:2px solid #fff;border-radius:999px;
   text-shadow:0 2px 0 rgba(0,0,0,.45);box-shadow:0 4px 0 rgba(0,0,0,.4);cursor:pointer}
 a:hover{background:linear-gradient(#ff6a6a,#d3151b)}
 </style></head><body><a href="arcade://return">&#9664; REGRESAR A LA SALA</a></body></html>`;
@@ -21,7 +21,7 @@ a:hover{background:linear-gradient(#ff6a6a,#d3151b)}
 function showReturnButton() {
   hideReturnButton();
   const area = screen.getPrimaryDisplay().bounds;
-  const width = 270, height = 52;
+  const width = 158, height = 34;
   returnWindow = new BrowserWindow({
     width, height, x: area.x + area.width - width - 16, y: area.y + 16,
     frame: false, transparent: true, resizable: false, movable: false,
