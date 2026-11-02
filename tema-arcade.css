@@ -153,3 +153,56 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
   #closeSettings{position:sticky;float:right;top:0}
   #editorList{grid-template-columns:1fr!important}
 }
+
+
+/* CAMBIO VISIBLE: CHECKBOX GRANDE Y TIPOGRAFIA LEGIBLE */
+#exitSettingsLabel{
+ position:absolute!important;top:12px!important;right:62px!important;z-index:30!important;
+ display:flex!important;align-items:center!important;gap:12px!important;
+ padding:12px 20px!important;min-height:48px!important;
+ background:linear-gradient(180deg,#42e58a,#087c3d)!important;
+ border:3px solid #fff!important;border-radius:9px!important;
+ color:#fff!important;font:900 20px/1.1 Arial,sans-serif!important;
+ letter-spacing:.4px!important;text-shadow:0 2px 2px #064b26!important;
+ box-shadow:0 4px 0 #064b26,0 5px 16px #0008!important;
+ cursor:pointer!important
+}
+#exitSettingsLabel input{
+ width:25px!important;height:25px!important;min-width:25px!important;
+ margin:0!important;accent-color:#fff!important;cursor:pointer!important
+}
+#exitSettingsLabel:hover{filter:brightness(1.12)}
+/* Tipografia de configuracion: cambio fuerte de tamaño y contraste */
+#settingsModal .dialog.settings,
+#settingsModal .dialog.settings *{
+ font-family:Arial,Helvetica,sans-serif!important;
+ -webkit-text-stroke:0!important
+}
+#settingsModal .settings h2{font-size:34px!important;font-weight:900!important;line-height:1.15!important;color:#fff!important}
+#settingsModal .settings .col-der>p,
+#settingsModal .settings label,
+#settingsModal .settings .startup-option,
+#settingsModal .settings .key-settings label{
+ font-size:18px!important;font-weight:700!important;line-height:1.35!important;color:#fff!important
+}
+#settingsModal #editorList input{
+ font:600 17px/1.3 Arial,Helvetica,sans-serif!important;color:#fff!important;
+ min-height:44px!important;padding:10px!important
+}
+#settingsModal #editorList button,
+#settingsModal #addGameBtn,
+#settingsModal #saveSettings,
+#settingsModal #importBtn,
+#settingsModal #exportBtn,
+#settingsModal #resetControls,
+#settingsModal #resetAppearance{
+ font:900 17px/1.2 Arial,Helvetica,sans-serif!important;padding:11px 15px!important
+}
+#settingsModal .key-settings input[type=text]{font:900 17px Arial,Helvetica,sans-serif!important;min-height:42px!important}
+#settingsModal .key-settings p,
+#settingsModal .settings small{font:600 15px/1.35 Arial,Helvetica,sans-serif!important}
+@media(max-width:900px){
+ #exitSettingsLabel{position:relative!important;top:auto!important;right:auto!important;width:max-content!important;max-width:100%!important;margin:8px 52px 12px auto!important;font-size:16px!important}
+ #settingsModal .settings h2{font-size:27px!important}
+ #settingsModal .settings label,#settingsModal .settings .startup-option{font-size:16px!important}
+}
