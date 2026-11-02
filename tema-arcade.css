@@ -206,3 +206,85 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
  #settingsModal .settings h2{font-size:27px!important}
  #settingsModal .settings label,#settingsModal .settings .startup-option{font-size:16px!important}
 }
+
+
+/* AJUSTE REAL DE CONFIGURACION: columna izquierda compacta y tecla de salida */
+#settingsModal .settings .col-izq{
+  flex:0 0 27%!important;
+  width:27%!important;
+  box-sizing:border-box!important;
+  padding:14px 12px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  gap:8px!important;
+}
+#settingsModal .settings .col-izq .key-settings{
+  margin:0 0 10px!important;
+}
+#settingsModal .settings .col-izq .key-settings h3{
+  display:block!important;
+  margin:4px 0 8px!important;
+  color:#fff!important;
+  font:800 14px/1.2 Arial,Helvetica,sans-serif!important;
+  text-shadow:0 1px 2px #243000!important;
+}
+#settingsModal .settings .col-izq .key-settings label,
+#settingsModal .settings .col-izq .startup-option{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:6px 8px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  margin:0 0 8px!important;
+  padding:8px 10px!important;
+  border-radius:10px!important;
+  font:700 13px/1.2 Arial,Helvetica,sans-serif!important;
+  letter-spacing:0!important;
+  text-align:left!important;
+}
+#settingsModal .settings .col-izq .key-settings label input[type=text]{
+  width:82px!important;
+  min-width:82px!important;
+  height:32px!important;
+  min-height:32px!important;
+  padding:4px!important;
+  font:800 13px Arial,Helvetica,sans-serif!important;
+}
+#settingsModal .settings .col-izq .startup-option input[type=checkbox]{
+  width:20px!important;height:20px!important;
+}
+#settingsModal .settings .col-izq .key-settings input[type=file]{
+  width:100%!important;max-width:145px!important;font:11px Arial,sans-serif!important;
+}
+#settingsModal .settings .col-izq .key-settings input[type=range]{
+  width:95px!important;
+}
+#settingsModal .settings .col-izq .key-settings button{
+  width:100%!important;
+  box-sizing:border-box!important;
+  padding:8px 7px!important;
+  margin:3px 0 8px!important;
+  font:800 12px/1.2 Arial,Helvetica,sans-serif!important;
+}
+#settingsModal .settings .col-izq .startup-option small,
+#settingsModal .settings .col-izq .key-settings small{
+  display:block!important;
+  grid-column:1/-1!important;
+  font:11px/1.25 Arial,Helvetica,sans-serif!important;
+}
+#settingsModal .settings .col-der{
+  min-width:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+@media(max-width:900px){
+  #settingsModal .settings .col-izq{
+    width:100%!important;max-height:42vh!important;overflow-y:auto!important;
+  }
+  #settingsModal .settings .col-izq .key-settings label,
+  #settingsModal .settings .col-izq .startup-option{
+    grid-template-columns:minmax(0,1fr) auto!important;
+    font-size:13px!important;
+  }
+}
