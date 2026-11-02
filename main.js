@@ -73,7 +73,7 @@ ipcMain.handle("arcade:pick-cover", async () => {
   fs.copyFileSync(source,destination);
   return {filePath:"file:///"+destination.replace(/\\\\/g,"/")};
 });
-ipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
+ipcMain.handle("arcade:quit-launcher", async () => { app.quit(); return { ok:true }; });\nipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
 ipcMain.handle("arcade:set-exit-key", async (_event,key) => registerExitShortcut(key));
 
 function autoStartSettings() {
