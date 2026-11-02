@@ -184,7 +184,7 @@ function fullscreenScript(pid) {
     "    Start-Sleep -Milliseconds 700",
     "  }",
     "}"
-  ].join("\\n");
+  ].join("\n");
 }
 
 ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
