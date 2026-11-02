@@ -4,7 +4,9 @@ contextBridge.exposeInMainWorld("arcadeAPI", {
   quitLauncher: () => ipcRenderer.invoke("arcade:quit-launcher"),
   pickExe: () => ipcRenderer.invoke("arcade:pick-exe"),
   pickCover: () => ipcRenderer.invoke("arcade:pick-cover"),
-  loadLibrary: () => ipcRenderer.invoke("arcade:load-library"),\n  saveLibrary: (games) => ipcRenderer.invoke("arcade:save-library", games),\n  getExitKey: () => ipcRenderer.invoke("arcade:get-exit-key"),
+  loadLibrary: () => ipcRenderer.invoke("arcade:load-library"),
+  saveLibrary: (games) => ipcRenderer.invoke("arcade:save-library", games),
+  getExitKey: () => ipcRenderer.invoke("arcade:get-exit-key"),
   setExitKey: (key) => ipcRenderer.invoke("arcade:set-exit-key", key),
   getAutoStart: () => ipcRenderer.invoke("arcade:get-auto-start"),
   setAutoStart: (enabled) => ipcRenderer.invoke("arcade:set-auto-start", enabled)
