@@ -55,18 +55,62 @@ function showLobby() {
   mainWindow.focus();
 }
 
-// Cierra el juego activo (y todo su árbol de procesos) y vuelve a la sala.
+// Cierra el juego activo y los procesos descendientes que haya abierto.
 function closeActiveGame() {
   const game = activeGame;
   if (!game) { showLobby(); return; }
   activeGame = null;
+  if (game.monitor) clearInterval(game.monitor);
   if (process.platform === "win32") {
-    execFile("taskkill", ["/PID", String(game.pid), "/T", "/F"], () => {});
+    const pids = new Set([game.pid, ...(game.trackedPids || [])]);
+    for (const pid of pids) execFile("taskkill", ["/PID", String(pid), "/T", "/F"], () => {});
   } else {
-    try { game.kill(); } catch (_) {}
+    try { game.child.kill(); } catch (_) {}
   }
   hideReturnButton();
   setTimeout(showLobby, 650);
+}
+
+// Obtiene los descendientes aunque el EXE inicial ya haya terminado.
+// Se conservan los PID vistos para no perder procesos que se independicen.
+function refreshGameProcesses(game) {
+  if (process.platform !== "win32" || activeGame !== game || game.checking) return;
+  game.checking = true;
+  const seeds = [game.pid, ...game.trackedPids];
+  const script = "$seeds=@(" + seeds.join(",") + ");" +
+    "$all=Get-CimInstance Win32_Process -ErrorAction SilentlyContinue;" +
+    "$ids=@($seeds);$changed=$true;" +
+    "while($changed){$changed=$false;foreach($p in $all){" +
+    "if(($ids -contains [int]$p.ParentProcessId) -and ($ids -notcontains [int]$p.ProcessId)){" +
+    "$ids+=([int]$p.ProcessId);$changed=$true}}};" +
+    "$ids | ConvertTo-Json -Compress";
+  execFile("powershell.exe", ["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-Command",script],
+    {windowsHide:true,timeout:12000,maxBuffer:1024*1024}, (error, stdout) => {
+      game.checking = false;
+      if (activeGame !== game) return;
+      if (!error) {
+        try {
+          const found = JSON.parse(stdout.trim() || "[]");
+          for (const pid of (Array.isArray(found) ? found : [found])) {
+            if (Number.isInteger(Number(pid)) && Number(pid) !== game.pid) game.trackedPids.add(Number(pid));
+          }
+        } catch (_) {}
+      }
+      // Si el proceso inicial y todos los descendientes conocidos terminaron, volver a la sala.
+      const live = new Set([game.pid, ...game.trackedPids]);
+      execFile("powershell.exe", ["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-Command",
+        "$ids=@(" + [...live].join(",") + ");foreach($id in $ids){if(Get-Process -Id $id -ErrorAction SilentlyContinue){Write-Output $id}}"],
+        {windowsHide:true,timeout:8000}, (_err, output) => {
+          if (activeGame !== game) return;
+          const alive = String(output || "").trim().split(/\s+/).filter(Boolean);
+          if (!alive.length) {
+            activeGame = null;
+            clearInterval(game.monitor);
+            hideReturnButton();
+            showLobby();
+          }
+        });
+    });
 }
 
 function registerExitShortcut(accelerator) {
@@ -197,18 +241,31 @@ ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
     if (activeGame) return { ok:false, error:"Ya hay un juego abierto. Usa el botón o la tecla de regreso para volver a la sala." };
 
     const child = spawn(exePath, [], { cwd:path.dirname(exePath), detached:false, stdio:"ignore", windowsHide:false });
-    activeGame = child;
+    const game = { pid:child.pid, child, trackedPids:new Set(), checking:false, monitor:null };
+    activeGame = game;
     child.once("error", (error) => {
-      if (activeGame === child) activeGame = null;
-      showLobby();
+      if (activeGame === game) {
+        activeGame = null;
+        if (game.monitor) clearInterval(game.monitor);
+        hideReturnButton();
+        showLobby();
+      }
       console.error("No se pudo iniciar el juego:", error);
     });
+    // No regresamos al cerrar el EXE inicial: algunos juegos abren otro proceso.
+    // Supervisamos el árbol completo y regresamos solo cuando ya no quede ninguno.
     child.once("exit", () => {
-      if (activeGame === child) {
+      if (activeGame === game && process.platform !== "win32") {
         activeGame = null;
+        if (game.monitor) clearInterval(game.monitor);
+        hideReturnButton();
         showLobby();
       }
     });
+    if (process.platform === "win32") {
+      refreshGameProcesses(game);
+      game.monitor = setInterval(() => refreshGameProcesses(game), 900);
+    }
 
     if (mainWindow) mainWindow.minimize();
     showReturnButton();
