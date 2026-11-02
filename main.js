@@ -73,7 +73,8 @@ ipcMain.handle("arcade:pick-cover", async () => {
   fs.copyFileSync(source,destination);
   return {filePath:"file:///"+destination.replace(/\\\\/g,"/")};
 });
-ipcMain.handle("arcade:quit-launcher", async () => { app.quit(); return { ok:true }; });\nipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
+ipcMain.handle("arcade:quit-launcher", async () => { app.quit(); return { ok:true }; });
+ipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
 ipcMain.handle("arcade:set-exit-key", async (_event,key) => registerExitShortcut(key));
 
 function autoStartSettings() {
@@ -108,7 +109,8 @@ ipcMain.handle("arcade:set-auto-start", async (_event, enabled) => {
 
 ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
   try {
-    if (typeof rawPath !== "string" || /[\r\n"]/.test(rawPath)) return { ok:false, error:"La ruta del juego no es válida." };
+    if (typeof rawPath !== "string" || /[\r
+"]/.test(rawPath)) return { ok:false, error:"La ruta del juego no es válida." };
     const exePath = path.resolve(rawPath.trim());
     if (!/^[A-Za-z]:\\/.test(exePath) && !/^\\\\/.test(exePath)) return { ok:false, error:"Escribe una ruta absoluta de Windows, por ejemplo C:\\Juegos\\MiJuego\\juego.exe." };
     if (path.extname(exePath).toLowerCase() !== ".exe") return { ok:false, error:"Selecciona un archivo .exe." };
