@@ -192,8 +192,6 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
 #settingsModal #editorList button,
 #settingsModal #addGameBtn,
 #settingsModal #saveSettings,
-#settingsModal #importBtn,
-#settingsModal #exportBtn,
 #settingsModal #resetControls,
 #settingsModal #resetAppearance{
  font:900 17px/1.2 Arial,Helvetica,sans-serif!important;padding:11px 15px!important
