@@ -471,3 +471,17 @@ main .stage .game-card .monitor-chin,
 main .stage .game-card .monitor-neck,
 main .stage .game-card .monitor-base,
 main .stage .game-card .info{display:none!important}
+
+
+/* REVISION B: prioridad absoluta al arte de portada y carga nueva */
+main .stage{position:absolute!important;inset:0!important;display:block!important;overflow:hidden!important}
+main .stage .game-card{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;padding:0!important;margin:0!important;border:0!important;border-radius:0!important;display:block!important;background:transparent!important}
+main .stage .game-card .monitor{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;margin:0!important;padding:0!important;filter:none!important}
+main .stage .game-card #cover{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;display:block!important;overflow:hidden!important;background:#080b18!important}
+main .stage .game-card #cover .cover-art{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:fill!important;object-position:center!important;margin:0!important;padding:0!important;border:0!important}
+main .stage .game-card #cover .cover-art[hidden]{display:none!important}
+main .stage .game-card .monitor-chin,main .stage .game-card .monitor-neck,main .stage .game-card .monitor-base,main .stage .game-card .info{display:none!important}
+#settingsModal .settings .col-izq{flex:0 0 29%!important;width:29%!important;max-width:29%!important;min-width:235px!important;background:#14243b!important;padding:12px!important}
+#settingsModal .settings .col-izq .key-settings label{font-size:14px!important;line-height:1.3!important;color:#fff!important;background:#294968!important;white-space:normal!important}
+#settingsModal .settings .col-izq .key-settings label input[data-key]{flex:0 0 74px!important;width:74px!important;min-width:74px!important}
+#settingsModal .settings .col-der{min-width:0!important}
