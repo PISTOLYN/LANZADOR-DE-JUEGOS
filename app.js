@@ -33,14 +33,19 @@ $("importFile").onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].
 $("exitKeyInput").addEventListener("keydown",e=>{e.preventDefault();if(["Escape","Enter"," "].includes(e.key))return;$("exitKeyInput").value=e.key.toUpperCase()});
 
 let recordingKeyInput=null;
+function startKeyCapture(input){
+  if(!input)return;
+  document.querySelectorAll("[data-key]").forEach(x=>x.classList.remove("recording"));
+  recordingKeyInput=input;
+  input.classList.add("recording");
+  input.value="PRESIONA UNA TECLA...";
+  input.focus();
+}
 document.querySelectorAll("[data-key]").forEach(input=>{
-  input.addEventListener("click",()=>{
-    document.querySelectorAll("[data-key]").forEach(x=>x.classList.remove("recording"));
-    recordingKeyInput=input;
-    input.classList.add("recording");
-    input.value="PRESIONA UNA TECLA";
-    input.focus();
-  });
+  input.readOnly=true;
+  input.tabIndex=0;
+  input.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();startKeyCapture(input)});
+  input.addEventListener("keydown",e=>{if(recordingKeyInput!==input){e.preventDefault();startKeyCapture(input)}});
 });
 document.addEventListener("keydown",e=>{
   if(!recordingKeyInput)return;
