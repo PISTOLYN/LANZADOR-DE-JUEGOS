@@ -485,3 +485,26 @@ main .stage .game-card .monitor-chin,main .stage .game-card .monitor-neck,main .
 #settingsModal .settings .col-izq .key-settings label{font-size:14px!important;line-height:1.3!important;color:#fff!important;background:#294968!important;white-space:normal!important}
 #settingsModal .settings .col-izq .key-settings label input[data-key]{flex:0 0 74px!important;width:74px!important;min-width:74px!important}
 #settingsModal .settings .col-der{min-width:0!important}
+
+
+/* FIX: la sala conserva el marco y la portada queda contenida en el monitor */
+main .stage{position:relative!important;inset:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:clamp(10px,3vw,34px)!important;width:100%!important;height:auto!important;overflow:visible!important;margin:0 auto!important}
+main .stage .game-card{position:relative!important;inset:auto!important;flex:0 1 650px!important;width:min(650px,calc(100% - 145px))!important;height:auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;padding:18px 20px 22px!important;margin:0!important;border:3px solid #ffbd4c!important;border-radius:22px!important;overflow:hidden!important}
+main .stage .game-card .monitor{position:relative!important;inset:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;width:min(100%,480px)!important;height:auto!important;margin:0!important;padding:0!important}
+main .stage .game-card .monitor-screen,main .stage .game-card #cover{position:relative!important;inset:auto!important;display:grid!important;place-items:center!important;width:100%!important;height:260px!important;min-height:260px!important;margin:0!important;padding:0!important;overflow:hidden!important;border:12px solid #e8e9e4!important;border-bottom-width:17px!important;border-radius:13px!important;background:#071d2c!important}
+main .stage .game-card #cover .cover-art{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center!important;margin:0!important;padding:0!important;border:0!important}
+main .stage .game-card #cover .cover-art[hidden]{display:none!important}
+main .stage .game-card #cover.has-cover strong,main .stage .game-card #cover.has-cover small{display:none!important}
+main .stage .game-card .monitor-chin,main .stage .game-card .monitor-neck,main .stage .game-card .monitor-base,main .stage .game-card .info{display:none!important}
+main .stage .game-card .monitor-screen:after{display:none!important}
+@media(max-width:650px){main .stage .game-card{width:calc(100% - 90px)!important;min-height:0!important;padding:12px 9px 18px!important}main .stage .game-card .monitor-screen,main .stage .game-card #cover{height:190px!important;min-height:190px!important;border-width:8px!important;border-bottom-width:13px!important}}
+/* Configuracion en dos columnas con columna de controles fija y legible */
+#settingsModal .dialog.settings{display:grid!important;grid-template-columns:minmax(270px,36%) minmax(0,1fr)!important;align-items:stretch!important;gap:0!important;width:min(1050px,96vw)!important;max-height:92vh!important;overflow:hidden!important;padding:0!important}
+#settingsModal .settings>.close{position:absolute!important;z-index:20!important;right:18px!important;top:14px!important}
+#settingsModal .settings .col-izq{grid-column:1!important;grid-row:1!important;display:block!important;width:auto!important;max-width:none!important;min-width:0!important;max-height:92vh!important;overflow-y:auto!important;padding:54px 14px 18px!important;background:linear-gradient(155deg,#14243b,#203b59)!important;border-right:3px solid #ffd22e!important}
+#settingsModal .settings .col-der{grid-column:2!important;grid-row:1!important;display:block!important;width:auto!important;min-width:0!important;max-height:92vh!important;overflow-y:auto!important;padding:54px 22px 20px!important}
+#settingsModal .settings .col-izq .key-settings{margin:0 0 12px!important;padding:10px!important}
+#settingsModal .settings .col-izq .key-settings label{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:7px!important;font:700 12px/1.25 Arial,sans-serif!important;color:#fff!important}
+#settingsModal .settings .col-izq .key-settings label input[data-key]{flex:0 0 94px!important;width:94px!important;min-width:94px!important;height:34px!important;cursor:pointer!important;pointer-events:auto!important}
+#settingsModal .settings .col-izq .key-settings label input[data-key].recording{background:#fff2a8!important;border:3px solid #ff2d83!important;color:#111!important;box-shadow:0 0 0 4px #ff2d8366!important}
+@media(max-width:650px){#settingsModal .dialog.settings{display:block!important;overflow:auto!important}#settingsModal .settings .col-izq,#settingsModal .settings .col-der{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;max-height:none!important;overflow:visible!important;border-right:0!important}#settingsModal .settings .col-izq{border-bottom:3px solid #ffd22e!important;padding-top:50px!important}#settingsModal .settings .col-der{padding:18px!important}}
