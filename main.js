@@ -138,9 +138,7 @@ ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
       const ps = "$p=Get-Process -Id " + pid + " -ErrorAction SilentlyContinue; " +
         "for($i=0;$i -lt 30 -and $p -and $p.MainWindowHandle -eq 0;$i++){Start-Sleep -Milliseconds 500;$p.Refresh()}; " +
         "if($p -and $p.MainWindowHandle -ne 0){" +
-        "Add-Type '[DllImport(\\"user32.dll\\")] public static extern bool ShowWindowAsync(IntPtr hWnd,int nCmdShow);' -Name Win -Namespace Arcade -ErrorAction SilentlyContinue; " +
-        "[Arcade.Win]::ShowWindowAsync($p.MainWindowHandle,3)|Out-Null; " +
-        "$w=New-Object -ComObject WScript.Shell; if($w.AppActivate($p.Id)){Start-Sleep -Milliseconds 300;$w.SendKeys('%{ENTER}')} }";
+        "$w=New-Object -ComObject WScript.Shell; if($w.AppActivate($p.Id)){Start-Sleep -Milliseconds 500;$w.SendKeys('%{ENTER}');Start-Sleep -Milliseconds 250;$w.SendKeys('%{SPACE}x')} }";
       execFile("powershell.exe", ["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-Command",ps], {windowsHide:true}, (error) => {
         if (error) console.warn("No se pudo solicitar pantalla completa al juego:", error.message);
       });
