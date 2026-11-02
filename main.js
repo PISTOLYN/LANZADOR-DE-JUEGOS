@@ -22,6 +22,20 @@ ipcMain.handle("arcade:pick-exe", async () => {
   return { filePath: result.filePaths[0] };
 });
 
+ipcMain.handle("arcade:get-auto-start", async () => {
+  return app.getLoginItemSettings().openAtLogin;
+});
+
+ipcMain.handle("arcade:set-auto-start", async (_event, enabled) => {
+  if (process.platform !== "win32") return { ok: false, error: "Esta opción está disponible en Windows." };
+  app.setLoginItemSettings({
+    openAtLogin: Boolean(enabled),
+    path: process.execPath,
+    args: []
+  });
+  return { ok: app.getLoginItemSettings().openAtLogin };
+});
+
 ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
   try {
     if (typeof rawPath !== "string" || /[\r\n"]/ .test(rawPath)) return { ok: false, error: "La ruta del juego no es válida." };
