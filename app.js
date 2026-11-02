@@ -22,9 +22,69 @@ async function launch(){
   $("loadingScreen").classList.remove("show");
   alert("Para iniciar juegos .EXE, abre la versión instalada de ARCADE LAUNCHER en Windows.");
 }
+
+// --- LÓGICA DEL LETRERO LED ---
+function applyHelpConfig() {
+  const h = $("helpText");
+  if (!h) return;
+  try {
+    const cfg = JSON.parse(localStorage.getItem("arcadeHelp_v1") || "{}");
+    if (cfg.text !== undefined) {
+      if(cfg.text.trim() === "") {
+        h.textContent = "SELECCIONA EL JUEGO CON LAS FLECHAS Y PRESIONA ENTER";
+        if($("helpTextInput")) $("helpTextInput").value = "";
+      } else {
+        h.textContent = cfg.text;
+        if($("helpTextInput")) $("helpTextInput").value = cfg.text;
+      }
+    }
+  } catch(e) {}
+}
+
+$("resetHelpBtn") && ($("resetHelpBtn").onclick = () => {
+  if($("helpTextInput")) $("helpTextInput").value = "SELECCIONA EL JUEGO CON LAS FLECHAS Y PRESIONA ENTER";
+});
+
+// --- FIN LÓGICA DEL LETRERO ---
+
 $("prevBtn").onclick=()=>move(-1);$("nextBtn").onclick=()=>move(1);$("launchBtn").onclick=launch;
-$("settingsBtn").onclick=()=>{editor();$("settingsModal").classList.add("show");loadAutoStart();["left","right","select"].forEach(k=>{const input=$(({left:"leftKeyInput",right:"rightKeyInput",select:"selectKeyInput"})[k]);input.value=showKey(controls[k]);input.dataset.keyValue=controls[k]});loadAppearanceControls();if(window.arcadeAPI?.getExitKey)window.arcadeAPI.getExitKey().then(k=>{$("exitKeyInput").value=k||"F10"}).catch(()=>{})};$("closeSettings").onclick=()=>{cancelKeyCapture();$("settingsModal").classList.remove("show");$("exitKeyInput").blur();document.activeElement?.blur?.()};$("returnToLobbyBtn")&&($("returnToLobbyBtn").onclick=()=>$("saveSettings").click());$("cancelLoading").onclick=()=>$("loadingScreen").classList.remove("show");
-$("saveSettings").onclick=async()=>{cancelKeyCapture();read();localStorage.setItem(KEY,JSON.stringify(games));if(window.arcadeAPI?.saveLibrary){try{const saved=await window.arcadeAPI.saveLibrary(games);if(!saved?.ok){alert(saved?.error||"No se pudieron guardar los juegos.");return}}catch(error){alert("No se pudieron guardar los juegos: "+error.message);return}}if(window.arcadeAPI?.setAutoStart){try{const result=await window.arcadeAPI.setAutoStart($("autoStartToggle").checked);if(!result.ok)alert(result.error||"No se pudo guardar el inicio automático.")}catch(e){alert("No se pudo guardar el inicio automático: "+e.message)}}controls={quit:"Escape",left:$("leftKeyInput").dataset.keyValue||"ArrowLeft",right:$("rightKeyInput").dataset.keyValue||"ArrowRight",select:$("selectKeyInput").dataset.keyValue||"Enter"};localStorage.setItem(CONTROL_KEY,JSON.stringify(controls));if(window.arcadeAPI?.setExitKey){try{const result=await window.arcadeAPI.setExitKey($("exitKeyInput").value.trim()||"F10");if(!result.ok)alert(result.error||"No se pudo asignar la tecla de regreso.")}catch(e){alert("No se pudo asignar la tecla de regreso: "+e.message)}}selected=Math.min(selected,games.length-1);render();$("settingsModal").classList.remove("show")};
+
+$("settingsBtn").onclick=()=>{
+  editor();
+  $("settingsModal").classList.add("show");
+  loadAutoStart();
+  ["left","right","select"].forEach(k=>{const input=$(({left:"leftKeyInput",right:"rightKeyInput",select:"selectKeyInput"})[k]);input.value=showKey(controls[k]);input.dataset.keyValue=controls[k]});
+  loadAppearanceControls();
+  
+  applyHelpConfig(); // Carga el texto actual en la caja de texto
+
+  if(window.arcadeAPI?.getExitKey)window.arcadeAPI.getExitKey().then(k=>{$("exitKeyInput").value=k||"F10"}).catch(()=>{})
+};
+
+$("closeSettings").onclick=()=>{cancelKeyCapture();$("settingsModal").classList.remove("show");$("exitKeyInput").blur();document.activeElement?.blur?.();applyHelpConfig();};
+$("returnToLobbyBtn")&&($("returnToLobbyBtn").onclick=()=>$("saveSettings").click());$("cancelLoading").onclick=()=>$("loadingScreen").classList.remove("show");
+
+$("saveSettings").onclick=async()=>{
+  cancelKeyCapture();
+  read();
+  
+  // Guarda el texto del letrero LED
+  if($("helpTextInput")) {
+    localStorage.setItem("arcadeHelp_v1", JSON.stringify({text: $("helpTextInput").value}));
+  }
+
+  localStorage.setItem(KEY,JSON.stringify(games));
+  if(window.arcadeAPI?.saveLibrary){try{const saved=await window.arcadeAPI.saveLibrary(games);if(!saved?.ok){alert(saved?.error||"No se pudieron guardar los juegos.");return}}catch(error){alert("No se pudieron guardar los juegos: "+error.message);return}}
+  if(window.arcadeAPI?.setAutoStart){try{const result=await window.arcadeAPI.setAutoStart($("autoStartToggle").checked);if(!result.ok)alert(result.error||"No se pudo guardar el inicio automático.")}catch(e){alert("No se pudo guardar el inicio automático: "+e.message)}}
+  controls={quit:"Escape",left:$("leftKeyInput").dataset.keyValue||"ArrowLeft",right:$("rightKeyInput").dataset.keyValue||"ArrowRight",select:$("selectKeyInput").dataset.keyValue||"Enter"};
+  localStorage.setItem(CONTROL_KEY,JSON.stringify(controls));
+  if(window.arcadeAPI?.setExitKey){try{const result=await window.arcadeAPI.setExitKey($("exitKeyInput").value.trim()||"F10");if(!result.ok)alert(result.error||"No se pudo asignar la tecla de regreso.")}catch(e){alert("No se pudo asignar la tecla de regreso: "+e.message)}}
+  selected=Math.min(selected,games.length-1);
+  applyHelpConfig(); // Aplica el texto nuevo
+  render();
+  $("settingsModal").classList.remove("show")
+};
+
 $("addGameBtn").onclick=()=>{read();games.push({title:"NUEVO JUEGO",subtitle:"",exePath:"",cover:""});editor()};
 $("editorList").onclick=async e=>{if(e.target.dataset.r!==undefined){read();games.splice(+e.target.dataset.r,1);if(!games.length)games.push({title:"NUEVO JUEGO",subtitle:"",exePath:"",cover:""});editor();return}if(e.target.classList.contains("browseCover")){read();const i=Number(e.target.dataset.cover);if(!window.arcadeAPI?.pickCover){alert("Selecciona portadas desde la versión instalada en Windows.");return}try{const result=await window.arcadeAPI.pickCover();if(result?.filePath){games[i].cover=result.filePath;editor()}}catch(err){alert("No se pudo seleccionar la portada: "+err.message)}return}if(e.target.dataset.browse!==undefined){read();const i=Number(e.target.dataset.browse);if(!window.arcadeAPI?.pickExe){alert("Para buscar archivos .EXE usa la versión instalada de ARCADE LAUNCHER en Windows.");return}try{const result=await window.arcadeAPI.pickExe();if(result?.filePath){games[i].exePath=result.filePath;const file=result.filePath.split(/[\\\\/]/).pop().replace(/\\.exe$/i,"");if(!games[i].title||games[i].title==="NUEVO JUEGO")games[i].title=file;editor()}}catch(err){alert("No se pudo abrir el explorador: "+err.message)}}};
 
@@ -58,10 +118,13 @@ document.addEventListener("keydown",e=>{
   input.blur();
 },true);
 $("resetControls").onclick=()=>{cancelKeyCapture();controls={quit:"Escape",left:"ArrowLeft",right:"ArrowRight",select:"Enter"};["left","right","select"].forEach(k=>{const input=$(({left:"leftKeyInput",right:"rightKeyInput",select:"selectKeyInput"})[k]);input.dataset.keyValue=controls[k];input.value=showKey(controls[k])})};
-document.onkeydown=e=>{if($("settingsModal").classList.contains("show")){if(normalizeKey(e.key)==="escape"&&!e.repeat){e.preventDefault();cancelKeyCapture();$("settingsModal").classList.remove("show")}return}if(normalizeKey(e.key)===normalizeKey(controls.right)){e.preventDefault();move(1)}else if(normalizeKey(e.key)===normalizeKey(controls.left)){e.preventDefault();move(-1)}else if(normalizeKey(e.key)===normalizeKey(controls.select)){e.preventDefault();launch()}else if(normalizeKey(e.key)===normalizeKey(controls.quit)){e.preventDefault();if(window.arcadeAPI?.quitLauncher)window.arcadeAPI.quitLauncher();else if(confirm("¿Deseas salir del lanzador?"))window.close()} };
+document.onkeydown=e=>{if($("settingsModal").classList.contains("show")){if(normalizeKey(e.key)==="escape"&&!e.repeat){e.preventDefault();cancelKeyCapture();$("settingsModal").classList.remove("show");applyHelpConfig();}return}if(normalizeKey(e.key)===normalizeKey(controls.right)){e.preventDefault();move(1)}else if(normalizeKey(e.key)===normalizeKey(controls.left)){e.preventDefault();move(-1)}else if(normalizeKey(e.key)===normalizeKey(controls.select)){e.preventDefault();launch()}else if(normalizeKey(e.key)===normalizeKey(controls.quit)){e.preventDefault();if(window.arcadeAPI?.quitLauncher)window.arcadeAPI.quitLauncher();else if(confirm("¿Deseas salir del lanzador?"))window.close()} };
 $("cover").ontouchstart=e=>touch=e.touches[0].clientX;$("cover").ontouchend=e=>{let d=e.changedTouches[0].clientX-touch;if(Math.abs(d)>40)move(d<0?1:-1)};
 try{const c=JSON.parse(localStorage.getItem(CONTROL_KEY));if(c&&typeof c==="object")controls={...controls,...c}}catch(_){}
-try{let d=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(d)&&d.length&&d.every(g=>g&&typeof g.title==="string"&&typeof g.exePath==="string"))games=d}catch(_){}render();
+try{let d=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(d)&&d.length&&d.every(g=>g&&typeof g.title==="string"&&typeof g.exePath==="string"))games=d}catch(_){}
+render();
+applyHelpConfig(); // Inicia el letrero al abrir el programa
+
 if(window.arcadeAPI?.loadLibrary){window.arcadeAPI.loadLibrary().then(result=>{if(result?.ok&&Array.isArray(result.games)&&result.games.length){games=result.games;localStorage.setItem(KEY,JSON.stringify(games));selected=Math.min(selected,games.length-1);render()}}).catch(error=>console.error("No se pudo cargar la colección:",error))}
 const APPEARANCE_KEY="arcadeAppearance_v1";
 function loadAppearanceControls(){let c={};try{c=JSON.parse(localStorage.getItem(APPEARANCE_KEY)||"{}")}catch(_){}$("changeSoundToggle").checked=c.sound!==false;$("changeSoundVolume").value=c.volume??45}
