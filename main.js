@@ -1,17 +1,72 @@
-const { app, BrowserWindow, ipcMain, dialog, globalShortcut } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog, globalShortcut, screen } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const { pathToFileURL } = require("url");
 const { spawn, execFile } = require("child_process");
 let mainWindow = null;
+let returnWindow = null;
 let activeGame = null;
 let exitAccelerator = "F10";
 
+/* ---------- Botón flotante "REGRESAR A LA SALA" ---------- */
+const RETURN_BUTTON_HTML = `<!doctype html><html><head><meta charset="utf-8"><style>
+html,body{margin:0;height:100%;background:transparent;overflow:hidden;user-select:none}
+a{display:flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;height:100%;
+  text-decoration:none;font:900 17px "Arial Black",Impact,sans-serif;letter-spacing:.03em;color:#fff;
+  background:linear-gradient(#ffc233,#f08a00);border:3px solid #fff;border-radius:999px;
+  text-shadow:0 2px 0 rgba(0,0,0,.45);box-shadow:0 4px 0 rgba(0,0,0,.4);cursor:pointer}
+a:hover{background:linear-gradient(#ff6a6a,#d3151b)}
+</style></head><body><a href="arcade://return">&#9664; REGRESAR A LA SALA</a></body></html>`;
+
+function showReturnButton() {
+  hideReturnButton();
+  const area = screen.getPrimaryDisplay().bounds;
+  const width = 270, height = 52;
+  returnWindow = new BrowserWindow({
+    width, height, x: area.x + area.width - width - 16, y: area.y + 16,
+    frame: false, transparent: true, resizable: false, movable: false,
+    skipTaskbar: true, focusable: false, show: false, hasShadow: false,
+    webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true }
+  });
+  returnWindow.setAlwaysOnTop(true, "screen-saver");
+  returnWindow.webContents.on("will-navigate", (event, url) => {
+    event.preventDefault();
+    if (url.startsWith("arcade://return")) closeActiveGame();
+  });
+  returnWindow.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+  returnWindow.loadURL("data:text/html;charset=utf-8," + encodeURIComponent(RETURN_BUTTON_HTML));
+  returnWindow.once("ready-to-show", () => {
+    if (returnWindow && !returnWindow.isDestroyed()) returnWindow.showInactive();
+  });
+}
+
+function hideReturnButton() {
+  if (returnWindow && !returnWindow.isDestroyed()) returnWindow.destroy();
+  returnWindow = null;
+}
+
+/* ---------- Sala ---------- */
 function showLobby() {
+  hideReturnButton();
   if (!mainWindow || mainWindow.isDestroyed()) return;
   mainWindow.setFullScreen(true);
   mainWindow.show();
   mainWindow.restore();
   mainWindow.focus();
+}
+
+// Cierra el juego activo (y todo su árbol de procesos) y vuelve a la sala.
+function closeActiveGame() {
+  const game = activeGame;
+  if (!game) { showLobby(); return; }
+  activeGame = null;
+  if (process.platform === "win32") {
+    execFile("taskkill", ["/PID", String(game.pid), "/T", "/F"], () => {});
+  } else {
+    try { game.kill(); } catch (_) {}
+  }
+  hideReturnButton();
+  setTimeout(showLobby, 650);
 }
 
 function registerExitShortcut(accelerator) {
@@ -21,29 +76,14 @@ function registerExitShortcut(accelerator) {
   }
   const previous = exitAccelerator;
   globalShortcut.unregister(previous);
-  if (!globalShortcut.register(key, () => {
-    const game = activeGame;
-    if (!game) return;
-    activeGame = null;
-    if (process.platform === "win32") {
-      execFile("taskkill", ["/PID", String(game.pid), "/T", "/F"], () => {});
-    } else {
-      try { game.kill(); } catch (_) {}
-    }
-    setTimeout(showLobby, 650);
-  })) {
-    if (previous) globalShortcut.register(previous, () => {
-      const game = activeGame;
-      if (!game) return;
-      activeGame = null;
-      execFile("taskkill", ["/PID", String(game.pid), "/T", "/F"], () => {});
-      setTimeout(showLobby, 650);
-    });
+  if (!globalShortcut.register(key, () => { if (activeGame) closeActiveGame(); })) {
+    if (previous) globalShortcut.register(previous, () => { if (activeGame) closeActiveGame(); });
     return { ok:false, error:"Esa tecla ya está ocupada por Windows u otra aplicación." };
   }
   exitAccelerator = key;
   return { ok:true, key };
 }
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 1280, height: 820, minWidth: 900, minHeight: 620, fullscreen: true,
@@ -71,7 +111,7 @@ ipcMain.handle("arcade:pick-cover", async () => {
   fs.mkdirSync(dir,{recursive:true});
   const destination=path.join(dir,Date.now()+path.extname(source).toLowerCase());
   fs.copyFileSync(source,destination);
-  return {filePath:"file:///"+destination.replace(/\\\\/g,"/")};
+  return {filePath:pathToFileURL(destination).href};
 });
 ipcMain.handle("arcade:quit-launcher", async () => { app.quit(); return { ok:true }; });
 ipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
@@ -107,6 +147,38 @@ ipcMain.handle("arcade:set-auto-start", async (_event, enabled) => {
   }
 });
 
+// Script de PowerShell: espera la ventana del juego, le quita el borde y la
+// estira sobre todo el monitor donde está (pantalla completa sin bordes).
+function fullscreenScript(pid) {
+  return [
+    "Add-Type -AssemblyName System.Windows.Forms",
+    "Add-Type @'",
+    "using System; using System.Runtime.InteropServices;",
+    "public class W {",
+    '[DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr h,int i);',
+    '[DllImport("user32.dll")] public static extern int SetWindowLong(IntPtr h,int i,int v);',
+    '[DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr h,IntPtr a,int x,int y,int cx,int cy,uint f);',
+    '[DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr h,int c);',
+    '[DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr h);',
+    '[DllImport("user32.dll")] public static extern bool SetProcessDPIAware();',
+    "}",
+    "'@",
+    "[W]::SetProcessDPIAware() | Out-Null",
+    "$p=Get-Process -Id " + pid + " -ErrorAction SilentlyContinue",
+    "for($i=0;$i -lt 40 -and $p -and $p.MainWindowHandle -eq 0;$i++){Start-Sleep -Milliseconds 500;$p.Refresh()}",
+    "if($p -and $p.MainWindowHandle -ne 0){",
+    "  Start-Sleep -Milliseconds 1500; $p.Refresh(); $h=$p.MainWindowHandle",
+    "  [W]::ShowWindow($h,9) | Out-Null",
+    "  $s=[System.Windows.Forms.Screen]::FromHandle($h).Bounds",
+    "  $st=[W]::GetWindowLong($h,-16)",
+    "  $st=$st -band (-bnot 0x00CF0000)",
+    "  [W]::SetWindowLong($h,-16,$st) | Out-Null",
+    "  [W]::SetWindowPos($h,[IntPtr]::Zero,$s.X,$s.Y,$s.Width,$s.Height,0x0064) | Out-Null",
+    "  [W]::SetForegroundWindow($h) | Out-Null",
+    "}"
+  ].join("\n");
+}
+
 ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
   try {
     if (typeof rawPath !== "string" || rawPath.includes(String.fromCharCode(13)) || rawPath.includes(String.fromCharCode(10)) || rawPath.includes('"')) return { ok:false, error:"La ruta del juego no es válida." };
@@ -114,7 +186,7 @@ ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
     if (!/^[A-Za-z]:\\/.test(exePath) && !/^\\\\/.test(exePath)) return { ok:false, error:"Escribe una ruta absoluta de Windows, por ejemplo C:\\Juegos\\MiJuego\\juego.exe." };
     if (path.extname(exePath).toLowerCase() !== ".exe") return { ok:false, error:"Selecciona un archivo .exe." };
     if (!fs.existsSync(exePath) || !fs.statSync(exePath).isFile()) return { ok:false, error:"No se encontró el EXE. Revisa la ruta en Configuración." };
-    if (activeGame) return { ok:false, error:"Ya hay un juego abierto. Usa la tecla de regreso para volver a la sala." };
+    if (activeGame) return { ok:false, error:"Ya hay un juego abierto. Usa el botón o la tecla de regreso para volver a la sala." };
 
     const child = spawn(exePath, [], { cwd:path.dirname(exePath), detached:false, stdio:"ignore", windowsHide:false });
     activeGame = child;
@@ -131,17 +203,11 @@ ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
     });
 
     if (mainWindow) mainWindow.minimize();
+    showReturnButton();
 
-    // Intenta maximizar la ventana del juego y enviar Alt+Enter a ESE proceso,
-    // no a la ventana que casualmente tenga el foco.
     if (process.platform === "win32") {
-      const pid = child.pid;
-      const ps = "$p=Get-Process -Id " + pid + " -ErrorAction SilentlyContinue; " +
-        "for($i=0;$i -lt 30 -and $p -and $p.MainWindowHandle -eq 0;$i++){Start-Sleep -Milliseconds 500;$p.Refresh()}; " +
-        "if($p -and $p.MainWindowHandle -ne 0){" +
-        "$w=New-Object -ComObject WScript.Shell; if($w.AppActivate($p.Id)){Start-Sleep -Milliseconds 500;$w.SendKeys('%{ENTER}');Start-Sleep -Milliseconds 250;$w.SendKeys('%{SPACE}x')} }";
-      execFile("powershell.exe", ["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-Command",ps], {windowsHide:true}, (error) => {
-        if (error) console.warn("No se pudo solicitar pantalla completa al juego:", error.message);
+      execFile("powershell.exe", ["-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-Command",fullscreenScript(child.pid)], {windowsHide:true}, (error) => {
+        if (error) console.warn("No se pudo poner el juego en pantalla completa:", error.message);
       });
     }
     return { ok:true, pid:child.pid };
