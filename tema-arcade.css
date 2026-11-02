@@ -100,3 +100,14 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
 /* Pantalla de carga */
 #loadingScreen{z-index:30}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Controles de sala y salida */
+#quitLauncherBtn{position:fixed!important;right:10.5%;bottom:3.8%;z-index:65;padding:5px 11px;border:2px solid #fff;border-radius:20px;background:linear-gradient(#d94b4b,#8e1118);color:#fff;font:900 clamp(10px,1vw,15px) Arial,sans-serif;cursor:pointer;box-shadow:0 3px 0 #451015}
+#quitLauncherBtn:hover{filter:brightness(1.2);transform:scale(1.04)}
+#cover{background-size:contain!important;background-repeat:no-repeat!important}
+#cover.has-cover{background-size:contain!important}
+#cover{image-rendering:auto}
+.key-settings input[type=file]{width:min(100%,220px);font-size:11px;color:#fff}
+.key-settings input[type=range]{width:130px;accent-color:#ffbf30}
+.key-settings button{background:#b44fb8;color:#fff;border:0;border-radius:5px;padding:8px;font-weight:800;cursor:pointer}
+.settings .col-izq{flex-basis:34%}
