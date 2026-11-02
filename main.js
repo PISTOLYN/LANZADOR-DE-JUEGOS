@@ -20,7 +20,7 @@ function registerExitShortcut(accelerator) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1280, height: 820, minWidth: 900, minHeight: 620, fullscreen: true, fullscreen: true,
+    width: 1280, height: 820, minWidth: 900, minHeight: 620, fullscreen: true, fullscreen: true, fullscreen: true,
     backgroundColor: "#080d19", autoHideMenuBar: true,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
@@ -50,6 +50,7 @@ ipcMain.handle("arcade:set-exit-key", async (_event,key) => registerExitShortcut
 ipcMain.handle("arcade:pick-cover",async()=>{const r=await dialog.showOpenDialog({title:"Selecciona la portada",properties:["openFile"],filters:[{name:"Imágenes",extensions:["png","jpg","jpeg","webp","bmp"]}]});if(r.canceled||!r.filePaths.length)return {canceled:true};const src=r.filePaths[0],dir=path.join(app.getPath("userData"),"covers");fs.mkdirSync(dir,{recursive:true});const dest=path.join(dir,Date.now()+path.extname(src).toLowerCase());fs.copyFileSync(src,dest);return {filePath:dest}});
 ipcMain.handle("arcade:get-exit-key",async()=>exitAccelerator);
 ipcMain.handle("arcade:set-exit-key",async(_e,k)=>registerExitShortcut(k));
+ipcMain.handle("arcade:pick-cover",async()=>{const r=await dialog.showOpenDialog({title:"Selecciona la portada",properties:["openFile"],filters:[{name:"Imágenes",extensions:["png","jpg","jpeg","webp","bmp"]}]});if(r.canceled||!r.filePaths.length)return {canceled:true};const src=r.filePaths[0],dir=path.join(app.getPath("userData"),"covers");fs.mkdirSync(dir,{recursive:true});const dest=path.join(dir,Date.now()+path.extname(src).toLowerCase());fs.copyFileSync(src,dest);return {filePath:dest}});
 ipcMain.handle("arcade:get-auto-start", async () => {
   return app.getLoginItemSettings().openAtLogin;
 });
