@@ -311,3 +311,163 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
 #cover{display:block!important;background-position:center center!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
 #cover.has-cover{background-size:100% 100%!important;background-position:center center!important}
 #cover strong,#cover small{display:none!important}
+
+
+/* ===== CORRECCION DE LEGIBILIDAD Y PORTADAS COMPLETAS ===== */
+/* Configuración: columna izquierda clara, compacta y con texto que contraste */
+#settingsModal .dialog.settings{
+  display:flex!important;
+  align-items:stretch!important;
+  gap:0!important;
+}
+#settingsModal .settings .col-izq{
+  flex:0 0 31%!important;
+  width:31%!important;
+  max-width:31%!important;
+  min-width:250px!important;
+  padding:16px 14px!important;
+  background:linear-gradient(155deg,#14243b 0%,#203b59 55%,#101d31 100%)!important;
+  border-right:4px solid #ffd22e!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+}
+#settingsModal .settings .col-izq .key-settings{
+  padding:10px!important;
+  margin:0 0 12px!important;
+  background:#0b1728!important;
+  border:1px solid #6d91b8!important;
+  border-radius:10px!important;
+  box-shadow:0 3px 9px #0006!important;
+}
+#settingsModal .settings .col-izq .key-settings h3{
+  display:block!important;
+  color:#ffe16b!important;
+  font:900 15px/1.2 Arial,Helvetica,sans-serif!important;
+  margin:2px 0 10px!important;
+  text-shadow:0 2px 3px #000!important;
+}
+#settingsModal .settings .col-izq .key-settings label,
+#settingsModal .settings .col-izq .startup-option{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  width:100%!important;
+  min-height:40px!important;
+  padding:8px 9px!important;
+  margin:0 0 7px!important;
+  border:1px solid #ffffff55!important;
+  border-radius:7px!important;
+  background:#294968!important;
+  color:#fff!important;
+  font:700 14px/1.25 Arial,Helvetica,sans-serif!important;
+  text-align:left!important;
+  text-shadow:0 1px 2px #000!important;
+  -webkit-text-stroke:0!important;
+}
+#settingsModal .settings .col-izq .key-settings label:nth-of-type(even){
+  background:#365b7b!important;
+}
+#settingsModal .settings .col-izq .key-settings label input[data-key]{
+  flex:0 0 84px!important;
+  width:84px!important;
+  min-width:84px!important;
+  height:32px!important;
+  min-height:32px!important;
+  padding:3px!important;
+  border:2px solid #ffd22e!important;
+  border-radius:5px!important;
+  background:#fff!important;
+  color:#101827!important;
+  font:900 12px/1 Arial,Helvetica,sans-serif!important;
+}
+#settingsModal .settings .col-izq .key-settings p,
+#settingsModal .settings .col-izq .key-settings small,
+#settingsModal .settings .col-izq .startup-option small{
+  display:block!important;
+  color:#f1f6ff!important;
+  font:600 12px/1.35 Arial,Helvetica,sans-serif!important;
+  text-shadow:0 1px 2px #000!important;
+}
+#settingsModal .settings .col-izq .startup-option{
+  background:#294968!important;
+  color:#fff!important;
+}
+#settingsModal .settings .col-izq .startup-option input[type=checkbox]{
+  flex:0 0 20px!important;width:20px!important;height:20px!important;
+}
+#settingsModal .settings .col-izq .key-settings button{
+  width:100%!important;
+  padding:8px!important;
+  background:#e6a51b!important;
+  color:#172033!important;
+  font:900 12px/1.2 Arial,Helvetica,sans-serif!important;
+}
+#settingsModal .settings .col-der{
+  flex:1 1 0!important;
+  width:auto!important;
+  min-width:0!important;
+  background:linear-gradient(135deg,#263d16,#405e20)!important;
+  padding:22px 24px!important;
+}
+#settingsModal .settings .col-der>h2,
+#settingsModal .settings .col-der>p{
+  color:#fff!important;
+  text-shadow:0 2px 3px #000!important;
+}
+#settingsModal #exitSettingsLabel{
+  max-width:calc(100% - 30px)!important;
+  white-space:normal!important;
+}
+@media(max-width:900px){
+  #settingsModal .dialog.settings{display:block!important;overflow:auto!important}
+  #settingsModal .settings .col-izq{
+    width:100%!important;max-width:none!important;min-width:0!important;
+    max-height:45vh!important;border-right:0!important;border-bottom:4px solid #ffd22e!important;
+  }
+  #settingsModal .settings .col-der{width:100%!important;padding:16px!important}
+}
+
+/* Sala: todas las capas del marco de portada deben ocupar el mismo cuadro.
+   La imagen se ajusta completa dentro del cuadro, sin recortarse ni salirse. */
+main .stage{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  display:block!important;overflow:hidden!important;
+}
+main .stage .game-card,
+main .stage .game-card .monitor,
+main .stage .game-card .monitor-screen,
+main .stage .game-card #cover{
+  position:absolute!important;inset:0!important;
+  width:100%!important;height:100%!important;
+  min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+  overflow:hidden!important;box-shadow:none!important;transform:none!important;
+}
+main .stage .game-card,
+main .stage .game-card .monitor{
+  display:block!important;background:transparent!important;
+}
+main .stage .game-card .monitor-screen,
+main .stage .game-card #cover{
+  display:block!important;
+  background-position:center center!important;
+  background-size:100% 100%!important;
+  background-repeat:no-repeat!important;
+  object-fit:fill!important;
+}
+main .stage .game-card #cover.has-cover{
+  background-size:100% 100%!important;
+  background-position:center center!important;
+}
+main .stage .game-card #cover img{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  max-width:none!important;max-height:none!important;object-fit:fill!important;
+}
+main .stage .game-card .monitor:after,
+main .stage .game-card .monitor-screen:after{display:none!important}
+main .stage .game-card .monitor-chin,
+main .stage .game-card .monitor-neck,
+main .stage .game-card .monitor-base,
+main .stage .game-card .info{display:none!important}
