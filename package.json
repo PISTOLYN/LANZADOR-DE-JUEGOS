@@ -11,7 +11,9 @@
   },
   "devDependencies": {
     "electron": "28.3.3",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "sharp": "^0.33.5",
+    "png-to-ico": "^2.0.1"
   },
   "build": {
     "appId": "com.pistolyn.arcadelauncher",
@@ -40,7 +42,8 @@
           ]
         }
       ],
-      "artifactName": "ARCADE-LAUNCHER-Setup-${arch}.${ext}"
+      "artifactName": "ARCADE-LAUNCHER-Setup-${arch}.${ext}",
+      "icon": "assets/icon.ico"
     },
     "nsis": {
       "oneClick": false,
