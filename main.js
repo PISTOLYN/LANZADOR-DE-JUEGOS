@@ -12,7 +12,17 @@ function createWindow() {
   win.loadFile("index.html");
 }
 
-ipcMain.handle("arcade:pick-exe", async () => {\n  const result = await dialog.showOpenDialog({\n    title: "Selecciona el juego que quieres agregar",\n    properties: ["openFile"],\n    filters: [{ name: "Juegos y aplicaciones", extensions: ["exe"] }]\n  });\n  if (result.canceled || !result.filePaths.length) return { canceled: true };\n  return { filePath: result.filePaths[0] };\n});\n\nipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
+ipcMain.handle("arcade:pick-exe", async () => {
+  const result = await dialog.showOpenDialog({
+    title: "Selecciona el juego que quieres agregar",
+    properties: ["openFile"],
+    filters: [{ name: "Juegos y aplicaciones", extensions: ["exe"] }]
+  });
+  if (result.canceled || !result.filePaths.length) return { canceled: true };
+  return { filePath: result.filePaths[0] };
+});
+
+ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
   try {
     if (typeof rawPath !== "string" || /[\r\n"]/ .test(rawPath)) return { ok: false, error: "La ruta del juego no es válida." };
     const exePath = path.resolve(rawPath.trim());
