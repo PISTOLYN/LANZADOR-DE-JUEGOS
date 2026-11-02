@@ -1,0 +1,102 @@
+/* ===== TEMA ARCADE (marco amarillo/negro) =====
+   Se carga DESPUES de style.css y solo sobreescribe la apariencia.
+   Area interior del marco (medida sobre la imagen 2576x1667):
+   izq 9% | der 9% | arriba 14.8% | abajo 14.9% */
+:root{
+  --in-l:9%; --in-r:9%; --in-t:14.8%; --in-b:14.9%;
+  --naranja:#f5a21b; --azul:#3db8e8; --morado:#b44fb8; --cian:#0f86b0; --rojo:#8f2b2b;
+  --fuente:"Bangers","Impact","Arial Narrow Bold",sans-serif;
+}
+html,body{margin:0;height:100%;overflow:hidden;background:#000}
+
+/* Marco encima de todo, con hueco transparente */
+body::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;
+  background:url("assets/marco.png") center/100% 100% no-repeat}
+
+/* Oculta el encabezado/pie antiguos; el marco los reemplaza */
+header,footer,.eyebrow,main>h1,.info,#dots,.monitor-chin,.monitor-neck,.monitor-base{display:none!important}
+header{display:block!important;position:fixed;inset:0;z-index:60;background:none;border:0;padding:0;height:0}
+header b{display:none}
+#settingsBtn{display:block!important;position:fixed;right:10.5%;top:3.2%;z-index:61;width:44px;height:44px;
+  border-radius:50%;border:3px solid #ffd21f;background:#14110a;color:#ffd21f;font-size:22px;cursor:pointer}
+#settingsBtn:hover,#settingsBtn:focus-visible{background:#ffd21f;color:#14110a;outline:none}
+
+/* ===== SALA ===== */
+main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin:0;padding:0;z-index:10;background:#120a1f}
+.stage,.game-card,.monitor,.monitor-screen,#cover{position:absolute!important;inset:0;width:100%!important;height:100%!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background-color:transparent}
+#cover{background-size:cover!important;background-position:center!important;display:flex;align-items:center;justify-content:center;
+  background-image:radial-gradient(circle at 30% 40%,#c21fb8 0,#3a0f52 45%,#0b1a6e 100%)}
+#cover img{width:100%;height:100%;object-fit:cover}
+#cover strong{font:900 12vw/1 var(--fuente);color:#fff;text-shadow:0 0 30px #ff2bd6}
+#cover small{display:none}
+
+/* Franja amarilla con la instruccion */
+.help{position:absolute;left:0;right:0;top:0;z-index:12;margin:0;padding:.7% 1%;text-align:center;
+  background:linear-gradient(#ffd84a,#f6b816);font:900 clamp(14px,2.6vw,40px)/1.1 var(--fuente);letter-spacing:.02em;
+  color:#e8141b;-webkit-text-stroke:.06em #fff;paint-order:stroke fill;text-shadow:0 .06em 0 rgba(0,0,0,.35);text-transform:uppercase}
+
+/* Flechas redondas laterales (se montan sobre el marco) */
+.nav-arrow{position:fixed!important;z-index:61;top:50%;transform:translateY(-50%);width:6.6%;aspect-ratio:1;max-width:170px;
+  border:0;padding:0;font-size:0;color:transparent;background:transparent center/contain no-repeat;cursor:pointer;
+  transition:transform .12s}
+#prevBtn{left:.9%;background-image:url("assets/flecha-izq.png")}
+#nextBtn{right:.9%;background-image:url("assets/flecha-der.png")}
+.nav-arrow:hover,.nav-arrow:focus-visible{transform:translateY(-50%) scale(1.1);outline:none}
+.nav-arrow:active{transform:translateY(-50%) scale(.94)}
+
+/* Boton de iniciar: discreto, abajo a la derecha (ENTER tambien funciona) */
+.launch{position:absolute;right:1.5%;bottom:2%;z-index:12;border:3px solid #fff;border-radius:999px;padding:.5em 1.2em;
+  font:900 clamp(12px,1.6vw,24px) var(--fuente);color:#fff;background:linear-gradient(#ff4d4d,#c2171d);cursor:pointer;opacity:.92}
+.launch kbd{background:#fff;color:#c2171d;border-radius:6px;padding:0 .4em;margin-right:.4em}
+
+/* ===== CONFIGURACION / MENU ===== */
+.overlay{z-index:20}
+#settingsModal{position:fixed!important;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l)!important;
+  background:none!important;padding:0!important;align-items:stretch;justify-content:stretch}
+#settingsModal .dialog.settings{position:relative;width:100%;max-width:none;height:100%;max-height:none;margin:0;padding:0;border:0;
+  border-radius:0;box-shadow:none;overflow:hidden;color:#fff;display:flex;
+  background:
+   repeating-conic-gradient(from 0deg at 62% 48%,#6f7d08 0 4deg,#5a6a07 4deg 8deg),#5a6a07}
+.settings .col-izq{flex:0 0 29%;padding:2.2% 1.6%;overflow:auto;
+  background:linear-gradient(#78d10a,#c6f200)}
+.settings .col-der{flex:1;padding:1.4% 2%;overflow:auto;background:rgba(32,60,6,.35)}
+.settings h2{font:900 clamp(24px,3.6vw,56px) var(--fuente);color:#fff;-webkit-text-stroke:.05em #000;paint-order:stroke fill;
+  text-align:center;margin:0 0 .3em}
+.settings .col-der>p{font:700 clamp(11px,1.3vw,20px) var(--fuente);text-transform:uppercase;margin:.2em 0 .8em;color:#fff;text-shadow:0 2px 0 #000}
+#addGameBtn{background:var(--naranja);color:#2a1700;border:0;border-radius:6px;padding:.7em 1em;font:700 clamp(12px,1.3vw,20px) var(--fuente);cursor:pointer}
+
+/* Pastillas de teclas */
+.key-settings h3,.key-settings>p{display:none}
+.key-settings label,.startup-option{display:flex;align-items:center;justify-content:space-between;gap:.6em;
+  margin:0 0 1em;padding:.7em .9em;border-radius:999px;font:900 clamp(11px,1.25vw,19px)/1.1 var(--fuente);
+  color:#fff;-webkit-text-stroke:.04em #000;paint-order:stroke fill;text-transform:uppercase;
+  box-shadow:0 6px 0 rgba(0,0,0,.25),inset 0 -6px 0 rgba(0,0,0,.12)}
+.col-izq>*:nth-child(odd) label,.key-settings label:nth-of-type(odd){background:linear-gradient(#ffb62e,#f0900c)}
+.key-settings label:nth-of-type(even){background:linear-gradient(#58cdf5,#2ea4de)}
+.startup-option{background:linear-gradient(#ffb62e,#f0900c)}
+.startup-option+.startup-option{background:linear-gradient(#58cdf5,#2ea4de)}
+.settings input[type=text]{width:3.6em;height:2.2em;text-align:center;border:0;border-radius:6px;background:#fff;color:#111;
+  font:700 clamp(11px,1.2vw,18px) var(--fuente);flex:none}
+.exit-key-option{display:contents}
+.startup-option small,.key-settings small{display:none}
+.startup-option input[type=checkbox]{width:2.2em;height:2.2em;accent-color:#0f86b0;flex:none}
+
+/* Tarjetas de juegos en 2 columnas */
+#editorList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2em;margin-top:1em}
+#editorList>*{background:rgba(40,24,14,.92);border-radius:8px;padding:.7em;display:flex;flex-wrap:wrap;gap:.5em;align-items:center}
+#editorList input[type=text],#editorList input:not([type]){flex:1 1 7em;min-width:0;background:#1d1511;border:1px solid #3a2a20;color:#fff;
+  border-radius:4px;padding:.6em;font:500 14px/1.2 system-ui,sans-serif}
+#editorList button{border:0;border-radius:5px;padding:.6em .9em;color:#fff;font:700 clamp(10px,1vw,15px) var(--fuente);cursor:pointer;text-transform:uppercase;background:var(--cian)}
+#editorList button:nth-of-type(n+2){background:var(--morado)}
+#editorList button[class*=del],#editorList button[class*=remove],#editorList button:last-of-type{background:var(--rojo)}
+#editorList small,#editorList span{font:600 12px var(--fuente);color:#e4b86c;text-transform:uppercase}
+
+.settings .col-der>p:last-of-type button,#saveSettings,#importBtn,#exportBtn{border:0;border-radius:6px;padding:.6em 1em;margin:.3em .3em 0 0;
+  font:700 clamp(11px,1.1vw,17px) var(--fuente);cursor:pointer;color:#fff;background:var(--cian)}
+#saveSettings{background:var(--naranja);color:#2a1700}
+#closeSettings{position:absolute;right:1%;top:1.5%;z-index:5;width:2.4em;height:2.4em;border:0;border-radius:50%;background:var(--rojo);color:#fff;cursor:pointer}
+
+/* Pantalla de carga */
+#loadingScreen{z-index:30}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
