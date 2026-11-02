@@ -162,6 +162,35 @@ ipcMain.handle("arcade:quit-launcher", async () => {
   app.exit(0);
   return { ok:true };
 });
+// La colección de juegos se guarda en un archivo del usuario, fuera de la carpeta de instalación.
+const libraryFile = path.join(app.getPath("userData"), "games-library.json");
+ipcMain.handle("arcade:load-library", async () => {
+  try {
+    if (!fs.existsSync(libraryFile)) return { ok:true, games:null };
+    const data = JSON.parse(fs.readFileSync(libraryFile, "utf8"));
+    return { ok:true, games:Array.isArray(data) ? data : null };
+  } catch (error) {
+    return { ok:false, error:"No se pudo leer la colección guardada: " + error.message };
+  }
+});
+ipcMain.handle("arcade:save-library", async (_event, games) => {
+  try {
+    if (!Array.isArray(games)) return { ok:false, error:"La colección de juegos no es válida." };
+    const safeGames = games.map(g => ({
+      title:String(g?.title || "JUEGO"),
+      subtitle:String(g?.subtitle || ""),
+      exePath:String(g?.exePath || ""),
+      cover:String(g?.cover || "")
+    }));
+    fs.mkdirSync(path.dirname(libraryFile), { recursive:true });
+    const tempFile = libraryFile + ".tmp";
+    fs.writeFileSync(tempFile, JSON.stringify(safeGames, null, 2), "utf8");
+    fs.renameSync(tempFile, libraryFile);
+    return { ok:true };
+  } catch (error) {
+    return { ok:false, error:"No se pudieron guardar los juegos: " + error.message };
+  }
+});
 ipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
 ipcMain.handle("arcade:set-exit-key", async (_event,key) => registerExitShortcut(key));
 
