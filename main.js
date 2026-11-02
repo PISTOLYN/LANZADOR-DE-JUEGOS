@@ -109,7 +109,7 @@ ipcMain.handle("arcade:set-auto-start", async (_event, enabled) => {
 
 ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
   try {
-    if (typeof rawPath !== "string" || rawPath.includes("\\r") || rawPath.includes("\\n") || rawPath.includes('"')) return { ok:false, error:"La ruta del juego no es válida." };
+    if (typeof rawPath !== "string" || rawPath.includes(String.fromCharCode(13)) || rawPath.includes(String.fromCharCode(10)) || rawPath.includes('"')) return { ok:false, error:"La ruta del juego no es válida." };
     const exePath = path.resolve(rawPath.trim());
     if (!/^[A-Za-z]:\\/.test(exePath) && !/^\\\\/.test(exePath)) return { ok:false, error:"Escribe una ruta absoluta de Windows, por ejemplo C:\\Juegos\\MiJuego\\juego.exe." };
     if (path.extname(exePath).toLowerCase() !== ".exe") return { ok:false, error:"Selecciona un archivo .exe." };
