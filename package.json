@@ -22,10 +22,13 @@
     "files": [
       "index.html",
       "style.css",
+      "tema-arcade.css",
+      "tema.js",
       "app.js",
       "games.json",
       "main.js",
-      "preload.js"
+      "preload.js",
+      "assets/**"
     ],
     "win": {
       "target": [
