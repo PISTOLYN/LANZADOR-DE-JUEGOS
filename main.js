@@ -50,18 +50,34 @@ ipcMain.handle("arcade:pick-cover", async () => {
 ipcMain.handle("arcade:get-exit-key", async () => exitAccelerator);
 ipcMain.handle("arcade:set-exit-key", async (_event,key) => registerExitShortcut(key));
 
+function autoStartSettings() {
+  return { path: process.execPath, args: [], name: "ARCADE LAUNCHER" };
+}
+
 ipcMain.handle("arcade:get-auto-start", async () => {
-  return app.getLoginItemSettings().openAtLogin;
+  if (process.platform !== "win32") return false;
+  try {
+    return Boolean(app.getLoginItemSettings(autoStartSettings()).openAtLogin);
+  } catch (error) {
+    console.error("No se pudo consultar el inicio automático:", error);
+    return false;
+  }
 });
 
 ipcMain.handle("arcade:set-auto-start", async (_event, enabled) => {
   if (process.platform !== "win32") return { ok: false, error: "Esta opción está disponible en Windows." };
-  app.setLoginItemSettings({
-    openAtLogin: Boolean(enabled),
-    path: process.execPath,
-    args: []
-  });
-  return { ok: app.getLoginItemSettings().openAtLogin };
+  try {
+    const settings = autoStartSettings();
+    app.setLoginItemSettings({ ...settings, openAtLogin: Boolean(enabled) });
+    const saved = Boolean(app.getLoginItemSettings(settings).openAtLogin);
+    if (saved !== Boolean(enabled)) {
+      return { ok: false, error: "Windows no confirmó el cambio. Ejecuta ARCADE LAUNCHER desde su instalación normal y vuelve a intentarlo." };
+    }
+    return { ok: true, enabled: saved };
+  } catch (error) {
+    console.error("Error al guardar el inicio automático:", error);
+    return { ok: false, error: "Windows no permitió guardar el inicio automático: " + error.message };
+  }
 });
 
 ipcMain.handle("arcade:launch-game", async (_event, rawPath) => {
