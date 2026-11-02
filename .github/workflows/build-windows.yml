@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [package.json, main.js, preload.js, index.html, style.css, tema.js, tema-arcade.css, app.js, .github/workflows/build-windows.yml]
+    paths: [package.json, generate-icon.cjs, assets/bola-roja.svg, main.js, preload.js, index.html, style.css, tema.js, tema-arcade.css, app.js, .github/workflows/build-windows.yml]
 jobs:
   build:
     runs-on: windows-latest
@@ -16,6 +16,8 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install
+      - name: Generate red ball Windows icon
+        run: node generate-icon.cjs
       - name: Build 32-bit and 64-bit installers
         run: npm run dist
       - name: Upload installers
