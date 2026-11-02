@@ -508,3 +508,127 @@ main .stage .game-card .monitor-screen:after{display:none!important}
 #settingsModal .settings .col-izq .key-settings label input[data-key]{flex:0 0 94px!important;width:94px!important;min-width:94px!important;height:34px!important;cursor:pointer!important;pointer-events:auto!important}
 #settingsModal .settings .col-izq .key-settings label input[data-key].recording{background:#fff2a8!important;border:3px solid #ff2d83!important;color:#111!important;box-shadow:0 0 0 4px #ff2d8366!important}
 @media(max-width:650px){#settingsModal .dialog.settings{display:block!important;overflow:auto!important}#settingsModal .settings .col-izq,#settingsModal .settings .col-der{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;max-height:none!important;overflow:visible!important;border-right:0!important}#settingsModal .settings .col-izq{border-bottom:3px solid #ffd22e!important;padding-top:50px!important}#settingsModal .settings .col-der{padding:18px!important}}
+
+
+/* ===== CORRECCION DE ALINEACION: SALA Y CONFIGURACION ===== */
+/* La ventana de configuracion queda centrada dentro del area disponible */
+#settingsModal{
+  position:fixed!important;
+  inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l)!important;
+  display:none;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+#settingsModal.show{display:flex!important}
+#settingsModal .dialog.settings{
+  position:relative!important;
+  inset:auto!important;
+  margin:auto!important;
+  width:min(1120px,96%)!important;
+  max-width:1120px!important;
+  height:min(90%,850px)!important;
+  max-height:90%!important;
+  box-sizing:border-box!important;
+  transform:none!important;
+  justify-self:center!important;
+  align-self:center!important;
+}
+#settingsModal .settings .col-izq,
+#settingsModal .settings .col-der{
+  box-sizing:border-box!important;
+  min-width:0!important;
+}
+#settingsModal .settings .col-der{
+  padding-left:clamp(18px,2vw,32px)!important;
+  padding-right:clamp(18px,2vw,32px)!important;
+}
+#settingsModal #editorList{
+  width:100%!important;
+  box-sizing:border-box!important;
+}
+#settingsModal #editorList>.row{
+  min-width:0!important;
+  box-sizing:border-box!important;
+}
+
+/* Centrar la tarjeta y la portada en la sala sin desplazar el escenario */
+main .stage{
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  bottom:0!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+main .stage .game-card{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  flex:0 1 min(72%,900px)!important;
+  width:min(72%,900px)!important;
+  max-width:900px!important;
+  height:auto!important;
+  margin:0!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+main .stage .game-card .monitor{
+  position:relative!important;
+  inset:auto!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  margin:0!important;
+  align-items:center!important;
+}
+main .stage .game-card .monitor-screen,
+main .stage .game-card #cover{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  width:100%!important;
+  height:clamp(220px,48vh,520px)!important;
+  min-height:0!important;
+  margin:0 auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+main .stage .game-card #cover .cover-art{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:50% 50%!important;
+  margin:0!important;
+}
+@media(max-width:900px){
+  #settingsModal .dialog.settings{
+    width:96%!important;
+    height:94%!important;
+    max-height:94%!important;
+  }
+  main .stage .game-card{
+    flex-basis:calc(100% - 90px)!important;
+    width:calc(100% - 90px)!important;
+  }
+}
