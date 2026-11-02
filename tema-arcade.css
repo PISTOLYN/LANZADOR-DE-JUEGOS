@@ -3,7 +3,7 @@
    Area interior del marco (medida sobre la imagen 2576x1667):
    izq 9% | der 9% | arriba 14.8% | abajo 14.9% */
 :root{
-  --in-l:9%; --in-r:9%; --in-t:14.8%; --in-b:14.9%;
+  --in-l:6.5%; --in-r:6.5%; --in-t:11.5%; --in-b:11.5%;
   --naranja:#f5a21b; --azul:#3db8e8; --morado:#b44fb8; --cian:#0f86b0; --rojo:#8f2b2b;
   --fuente:"Bangers","Impact","Arial Narrow Bold",sans-serif;
 }
@@ -104,8 +104,13 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
 /* Controles de sala y salida */
 #quitLauncherBtn{position:fixed!important;right:10.5%;bottom:3.8%;z-index:65;padding:5px 11px;border:2px solid #fff;border-radius:20px;background:linear-gradient(#d94b4b,#8e1118);color:#fff;font:900 clamp(10px,1vw,15px) Arial,sans-serif;cursor:pointer;box-shadow:0 3px 0 #451015}
 #quitLauncherBtn:hover{filter:brightness(1.2);transform:scale(1.04)}
-#cover{background-size:contain!important;background-repeat:no-repeat!important}
-#cover.has-cover{background-size:contain!important}
+#cover{background-size:cover!important;background-repeat:no-repeat!important;background-position:center center!important}
+#cover.has-cover{background-size:cover!important}
+/* Quita por completo el monitor blanco y sus piezas; la portada ocupa el escenario ampliado */
+.monitor,.monitor-chin,.monitor-neck,.monitor-base{filter:none!important;background:none!important;box-shadow:none!important;border:0!important}
+.monitor-chin,.monitor-neck,.monitor-base{display:none!important}
+.monitor-screen{border:0!important;outline:0!important;box-shadow:none!important;border-radius:0!important}
+#cover{background-color:#080b18!important}
 #cover{image-rendering:auto}
 .key-settings input[type=file]{width:min(100%,220px);font-size:11px;color:#fff}
 .key-settings input[type=range]{width:130px;accent-color:#ffbf30}
