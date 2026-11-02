@@ -5,34 +5,20 @@
 
 <section class="stage"><button id="prevBtn" class="nav-arrow" aria-label="Juego anterior">◀</button><article class="game-card"><div class="monitor"><div class="monitor-screen" id="cover"><strong id="coverSymbol">01</strong><small>ARCADE COLLECTION</small></div><div class="monitor-chin"><span>ARCADE</span><span class="power-light"></span></div><div class="monitor-neck"></div><div class="monitor-base"></div></div><div class="info"><small class="ready">● LISTO PARA JUGAR</small><h2 id="gameTitle"></h2><p id="gameSubtitle"></p><span id="gameIndex"></span></div></article><button id="nextBtn" class="nav-arrow" aria-label="Juego siguiente">▶</button></section>
 
-<div id="dots"></div><button id="launchBtn" class="launch"><kbd>ENTER</kbd> INICIAR JUEGO <span>➜</span></button><p class="help" id="helpText">SELECCIONA EL JUEGO CON LAS FLECHAS Y PRESIONA ENTER</p></main>
+<div id="dots"></div><button id="launchBtn" class="launch"><kbd>ENTER</kbd> INICIAR JUEGO <span>➜</span></button><p class="help">SELECCIONA EL JUEGO CON LAS FLECHAS Y PRESIONA ENTER</p></main>
 
 <footer>ARCADE LAUNCHER · TU SALA DE JUEGOS</footer>
 
 <div id="loadingScreen" class="overlay"><div class="dialog"><h2>INICIANDO JUEGO<span>...</span></h2><div class="bar"></div><p id="loadingGameName"></p><p>Preparando el juego...</p><button id="cancelLoading">CANCELAR</button></div></div>
 
 <button id="quitLauncherBtn" type="button" title="Salir del lanzador">SALIR ✕</button>
-<div id="settingsModal" class="overlay"><div class="dialog settings"><button id="closeSettings" class="close" type="button" aria-label="Cerrar configuración">✕</button><h2>CONFIGURACIÓN</h2><p>Agrega tus juegos, su portada y la ruta del archivo EXE. La portada aparecerá en la sala.</p><button id="addGameBtn">＋ AGREGAR JUEGO</button><div id="editorList"></div>
-<div class="key-settings"><h3>CONTROLES DEL LANZADOR</h3>
+<div id="settingsModal" class="overlay"><div class="dialog settings"><button id="closeSettings" class="close" type="button" aria-label="Cerrar configuración">✕</button><h2>CONFIGURACIÓN</h2><p>Agrega tus juegos, su portada y la ruta del archivo EXE. La portada aparecerá en la sala.</p><button id="addGameBtn">＋ AGREGAR JUEGO</button><div id="editorList"></div><div class="key-settings"><h3>CONTROLES DEL LANZADOR</h3>
 
 <label>Selecciona la tecla para la flecha derecha <input id="rightKeyInput" data-key="right" type="text" value="ARROWRIGHT" readonly></label>
 <label>Selecciona la tecla para la flecha izquierda <input id="leftKeyInput" data-key="left" type="text" value="ARROWLEFT" readonly></label>
 <label>Selecciona la tecla para seleccionar el juego <input id="selectKeyInput" data-key="select" type="text" value="ENTER" readonly></label>
 <p>Haz clic en una casilla y presiona cualquier tecla para asignarla. También puedes usar flechas, Enter, Escape y Espacio.</p><button id="resetControls" type="button">RESTAURAR TECLAS ORIGINALES</button></div>
 <div class="key-settings"><h3>APARIENCIA Y SONIDOS</h3><label>FONDO DE LA SALA <input id="backgroundFile" type="file" accept="image/*"></label><label>SONIDO AL CAMBIAR DE JUEGO <input id="changeSoundToggle" type="checkbox" checked></label><label>VOLUMEN DEL SONIDO <input id="changeSoundVolume" type="range" min="0" max="100" value="45"></label><button id="resetAppearance" type="button">RESTAURAR FONDO Y SONIDO ORIGINAL</button></div>
-
-<!-- NUEVA SECCION PARA EDITAR EL TEXTO Y MOVERLO -->
-<div class="key-settings"><h3>TEXTO DE AYUDA (CARTEL AMARILLO)</h3>
-<label>Texto que se muestra: <input id="helpTextInput" type="text" style="width: 100%; margin-top: 5px;" placeholder="Escribe el texto aquí..."></label>
-<p>Mueve el cartel con los botones de abajo:</p>
-<div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 10px;">
-  <button type="button" onclick="moverAyuda('left')">⬅ IZQUIERDA</button>
-  <button type="button" onclick="moverAyuda('up')">⬆ ARRIBA</button>
-  <button type="button" onclick="moverAyuda('down')">⬇ ABAJO</button>
-  <button type="button" onclick="moverAyuda('right')">➡ DERECHA</button>
-</div>
-<button id="resetHelpBtn" type="button">RESTAURAR POSICIÓN ORIGINAL</button>
-</div>
 
 <label class="startup-option"><span class="exit-key-option">Selecciona la tecla para regresar a la sala <input id="exitKeyInput" type="text" value="F10" maxlength="12" placeholder="F10"></span><small>Esta tecla cierra el juego activo y regresa al lanzador.</small></label><label class="startup-option"><input type="checkbox" id="autoStartToggle"> <span>Iniciar al encender Windows</span><small>Abre ARCADE LAUNCHER automáticamente cuando inicies sesión en tu PC.</small></label><p><button id="saveSettings">GUARDAR CAMBIOS</button></p><small>Agrega una imagen de portada desde BUSCAR PORTADA y selecciona el EXE correspondiente.</small></div></div>
 
