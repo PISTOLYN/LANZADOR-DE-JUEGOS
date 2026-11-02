@@ -23,7 +23,6 @@ async function launch(){
   alert("Para iniciar juegos .EXE, abre la versión instalada de ARCADE LAUNCHER en Windows.");
 }
 
-// --- LÓGICA DEL LETRERO LED ---
 function applyHelpConfig() {
   const h = $("helpText");
   if (!h) return;
@@ -45,8 +44,6 @@ $("resetHelpBtn") && ($("resetHelpBtn").onclick = () => {
   if($("helpTextInput")) $("helpTextInput").value = "SELECCIONA EL JUEGO CON LAS FLECHAS Y PRESIONA ENTER";
 });
 
-// --- FIN LÓGICA DEL LETRERO ---
-
 $("prevBtn").onclick=()=>move(-1);$("nextBtn").onclick=()=>move(1);$("launchBtn").onclick=launch;
 
 $("settingsBtn").onclick=()=>{
@@ -56,7 +53,7 @@ $("settingsBtn").onclick=()=>{
   ["left","right","select"].forEach(k=>{const input=$(({left:"leftKeyInput",right:"rightKeyInput",select:"selectKeyInput"})[k]);input.value=showKey(controls[k]);input.dataset.keyValue=controls[k]});
   loadAppearanceControls();
   
-  applyHelpConfig(); // Carga el texto actual en la caja de texto
+  applyHelpConfig();
 
   if(window.arcadeAPI?.getExitKey)window.arcadeAPI.getExitKey().then(k=>{$("exitKeyInput").value=k||"F10"}).catch(()=>{})
 };
@@ -68,7 +65,6 @@ $("saveSettings").onclick=async()=>{
   cancelKeyCapture();
   read();
   
-  // Guarda el texto del letrero LED
   if($("helpTextInput")) {
     localStorage.setItem("arcadeHelp_v1", JSON.stringify({text: $("helpTextInput").value}));
   }
@@ -80,7 +76,7 @@ $("saveSettings").onclick=async()=>{
   localStorage.setItem(CONTROL_KEY,JSON.stringify(controls));
   if(window.arcadeAPI?.setExitKey){try{const result=await window.arcadeAPI.setExitKey($("exitKeyInput").value.trim()||"F10");if(!result.ok)alert(result.error||"No se pudo asignar la tecla de regreso.")}catch(e){alert("No se pudo asignar la tecla de regreso: "+e.message)}}
   selected=Math.min(selected,games.length-1);
-  applyHelpConfig(); // Aplica el texto nuevo
+  applyHelpConfig();
   render();
   $("settingsModal").classList.remove("show")
 };
@@ -123,7 +119,7 @@ $("cover").ontouchstart=e=>touch=e.touches[0].clientX;$("cover").ontouchend=e=>{
 try{const c=JSON.parse(localStorage.getItem(CONTROL_KEY));if(c&&typeof c==="object")controls={...controls,...c}}catch(_){}
 try{let d=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(d)&&d.length&&d.every(g=>g&&typeof g.title==="string"&&typeof g.exePath==="string"))games=d}catch(_){}
 render();
-applyHelpConfig(); // Inicia el letrero al abrir el programa
+applyHelpConfig();
 
 if(window.arcadeAPI?.loadLibrary){window.arcadeAPI.loadLibrary().then(result=>{if(result?.ok&&Array.isArray(result.games)&&result.games.length){games=result.games;localStorage.setItem(KEY,JSON.stringify(games));selected=Math.min(selected,games.length-1);render()}}).catch(error=>console.error("No se pudo cargar la colección:",error))}
 const APPEARANCE_KEY="arcadeAppearance_v1";
