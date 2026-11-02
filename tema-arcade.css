@@ -5,7 +5,7 @@
 :root{
   --in-l:6.5%; --in-r:6.5%; --in-t:11.5%; --in-b:11.5%;
   --naranja:#f5a21b; --azul:#3db8e8; --morado:#b44fb8; --cian:#0f86b0; --rojo:#8f2b2b;
-  --fuente:"Bangers","Impact","Arial Narrow Bold",sans-serif;
+  --fuente:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
 }
 html,body{margin:0;height:100%;overflow:hidden;background:#000}
 
@@ -116,3 +116,40 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
 .key-settings input[type=range]{width:130px;accent-color:#ffbf30}
 .key-settings button{background:#b44fb8;color:#fff;border:0;border-radius:5px;padding:8px;font-weight:800;cursor:pointer}
 .settings .col-izq{flex-basis:34%}
+
+
+/* ===== LEGIBILIDAD Y REGRESO A LA SALA ===== */
+#settingsModal{overflow:hidden!important}
+#settingsModal .dialog.settings{overflow:hidden!important}
+.settings .col-izq,.settings .col-der{min-height:0;overscroll-behavior:contain}
+.settings .col-der{padding:2.2% 2.5% 3%!important}
+.settings h2,.settings label,.settings button,.settings p,.settings small,
+#editorList button,#editorList span{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif!important;
+  -webkit-text-stroke:0!important;letter-spacing:.025em}
+.settings h2{font-size:clamp(25px,3vw,43px)!important;line-height:1.05;color:#fff!important;
+  text-shadow:0 2px 3px #172400!important;margin-bottom:.45em!important}
+.settings .col-der>p{font-size:clamp(14px,1.25vw,18px)!important;line-height:1.25;color:#fff!important;
+  text-shadow:0 1px 2px #172400!important}
+.key-settings label,.startup-option{font-size:clamp(13px,1.15vw,17px)!important;line-height:1.2!important;
+  text-shadow:0 1px 2px #253400!important}
+#editorList{grid-template-columns:repeat(2,minmax(0,1fr));gap:.8em!important}
+#editorList .row{min-width:0;gap:.45em!important}
+#editorList input{font:600 14px/1.25 Arial,sans-serif!important;min-height:36px}
+#editorList button{font-size:clamp(12px,1vw,15px)!important;line-height:1.1;padding:.65em .75em!important}
+#returnToLobbyBtn{position:absolute;right:4.7%;top:1.4%;z-index:20;min-height:40px;padding:8px 16px;
+  border:2px solid #fff;border-radius:24px;background:linear-gradient(#27c96b,#087c3d);
+  color:#fff;font:900 clamp(13px,1.2vw,18px)/1 "Barlow Condensed",Arial,sans-serif;
+  text-shadow:0 1px 2px #064b26;box-shadow:0 3px 0 #064b26;cursor:pointer}
+#returnToLobbyBtn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+#closeSettings{right:1%;top:1.3%;z-index:21;width:38px;height:38px;font:900 19px Arial,sans-serif!important}
+#addGameBtn,#saveSettings,#importBtn,#exportBtn,#resetControls,#resetAppearance{
+  font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif!important;font-weight:900!important;
+  font-size:clamp(13px,1.15vw,17px)!important;letter-spacing:.03em!important}
+@media(max-width:900px){
+  #settingsModal{inset:5% 4%!important}
+  #settingsModal .dialog.settings{overflow:auto!important;display:block!important}
+  .settings .col-izq,.settings .col-der{overflow:visible!important;padding:18px!important}
+  #returnToLobbyBtn{position:sticky;top:0;float:right;margin:4px 45px 8px 0}
+  #closeSettings{position:sticky;float:right;top:0}
+  #editorList{grid-template-columns:1fr!important}
+}
