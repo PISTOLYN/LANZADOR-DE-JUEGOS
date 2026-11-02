@@ -32,7 +32,16 @@ $("exportBtn").onclick=()=>{read();download("arcade-games.json",JSON.stringify({
 $("importFile").onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text()),a=Array.isArray(d)?d:d.games;if(!Array.isArray(a)||!a.length||!a.every(g=>g&&typeof g.title==="string"&&typeof g.exePath==="string"))throw 0;games=a;editor()}catch(_){alert("JSON no válido")}e.target.value=""};
 $("exitKeyInput").addEventListener("keydown",e=>{e.preventDefault();if(["Escape","Enter"," "].includes(e.key))return;$("exitKeyInput").value=e.key.toUpperCase()});
 
-document.querySelectorAll("[data-key]").forEach(input=>{input.addEventListener("click",()=>{input.focus();input.classList.add("recording")});input.addEventListener("keydown",e=>{e.preventDefault();e.stopPropagation();if(["Shift","Control","Alt","Meta"].includes(e.key))return;input.dataset.keyValue=e.key;input.value=showKey(e.key);input.classList.remove("recording")})});
+document.querySelectorAll("[data-key]").forEach(input=>{
+  input.addEventListener("click",()=>{document.querySelectorAll("[data-key]").forEach(x=>x.classList.remove("recording"));input.focus();input.classList.add("recording");input.value="PRESIONA UNA TECLA"});
+});
+document.addEventListener("keydown",e=>{
+  const input=document.activeElement?.matches?.("[data-key]")?document.activeElement:null;
+  if(!input)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(["Shift","Control","Alt","Meta"].includes(e.key))return;
+  input.dataset.keyValue=e.key;input.value=showKey(e.key);input.classList.remove("recording");input.blur();
+},true);
 $("resetControls").onclick=()=>{controls={quit:"Escape",left:"ArrowLeft",right:"ArrowRight",select:"Enter"};["quit","left","right","select"].forEach(k=>{const input=$(({quit:"quitKeyInput",left:"leftKeyInput",right:"rightKeyInput",select:"selectKeyInput"})[k]);input.dataset.keyValue=controls[k];input.value=showKey(controls[k])})};
 document.onkeydown=e=>{if($("settingsModal").classList.contains("show")){if(normalizeKey(e.key)===normalizeKey(controls.quit)&&!e.repeat){e.preventDefault();$("settingsModal").classList.remove("show")}return}if(normalizeKey(e.key)===normalizeKey(controls.right)){e.preventDefault();move(1)}else if(normalizeKey(e.key)===normalizeKey(controls.left)){e.preventDefault();move(-1)}else if(normalizeKey(e.key)===normalizeKey(controls.select)){e.preventDefault();launch()}else if(normalizeKey(e.key)===normalizeKey(controls.quit)){e.preventDefault();if(window.arcadeAPI?.quitLauncher)window.arcadeAPI.quitLauncher();else if(confirm("¿Deseas salir del lanzador?"))window.close()} };
 $("cover").ontouchstart=e=>touch=e.touches[0].clientX;$("cover").ontouchend=e=>{let d=e.changedTouches[0].clientX-touch;if(Math.abs(d)>40)move(d<0?1:-1)};
