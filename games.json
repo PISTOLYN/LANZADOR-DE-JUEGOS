@@ -1,0 +1,64 @@
+{
+  "games": [
+    {
+      "title": "MI PRIMER JUEGO",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego1\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 2",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego2\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 3",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego3\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 4",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego4\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 5",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego5\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 6",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego6\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 7",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego7\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 8",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego8\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 9",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego9\\\\juego.exe",
+      "cover": ""
+    },
+    {
+      "title": "JUEGO 10",
+      "subtitle": "Personaliza nombre y ruta desde configuración.",
+      "exePath": "C:\\\\Juegos\\\\Juego10\\\\juego.exe",
+      "cover": ""
+    }
+  ]
+}
