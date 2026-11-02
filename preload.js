@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("arcadeAPI", {
-  launchGame: (exePath) => ipcRenderer.invoke("arcade:launch-game", exePath),\n  quitLauncher: () => ipcRenderer.invoke("arcade:quit-launcher"),
+  launchGame: (exePath) => ipcRenderer.invoke("arcade:launch-game", exePath),
+  quitLauncher: () => ipcRenderer.invoke("arcade:quit-launcher"),
   pickExe: () => ipcRenderer.invoke("arcade:pick-exe"),
   pickCover: () => ipcRenderer.invoke("arcade:pick-cover"),
   getExitKey: () => ipcRenderer.invoke("arcade:get-exit-key"),
