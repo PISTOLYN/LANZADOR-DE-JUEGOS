@@ -1,16 +1,22 @@
-# ARCADE LAUNCHER
-Lanzador arcade para GitHub Pages. Edita nombres, descripciones, rutas y portadas desde el engrane. Los cambios se guardan en el navegador; puedes exportar e importar la biblioteca como JSON.
+# ARCADE LAUNCHER – PISTOLYN
 
-## Publicar
-1. Abre Settings → Pages.
-2. Selecciona Deploy from a branch, rama main y carpeta /(root).
-3. Guarda. URL esperada: https://pistolyn.github.io/LANZADOR-DE-JUEGOS/
+Aplicación de escritorio para Windows. Permite navegar por la biblioteca arcade y abrir directamente los juegos instalados.
 
-## Usar
+## Instaladores
+- `ARCADE-LAUNCHER-Setup-ia32.exe`: Windows 10 de 32 bits.
+- `ARCADE-LAUNCHER-Setup-x64.exe`: Windows 10/11 de 64 bits.
+
+## Cómo obtenerlos
+1. Abre la pestaña **Actions** del repositorio.
+2. Entra a **Build Windows installers** y espera a que termine en verde.
+3. En **Artifacts**, descarga `ARCADE-LAUNCHER-WINDOWS-INSTALLERS`.
+4. Descomprime el ZIP y ejecuta el instalador correspondiente.
+
+## Uso
 1. Abre el lanzador y pulsa ⚙.
-2. Escribe el nombre y ruta completa del EXE, por ejemplo C:\Juegos\MiJuego\juego.exe.
-3. Guarda, selecciona el juego y pulsa ENTER.
-4. Se descargará un BAT; ábrelo manualmente desde Descargas.
+2. Agrega el nombre y la ruta completa del juego, por ejemplo `C:\Juegos\MiJuego\juego.exe`.
+3. Guarda, selecciona el juego y pulsa ENTER. La aplicación abrirá el EXE directamente.
+4. Los cambios se guardan localmente en la computadora.
 
-## Seguridad
-GitHub Pages no puede ejecutar directamente EXE/BAT ni acceder a las rutas locales. Revisa el archivo BAT y su ruta antes de abrirlo. Las rutas incluidas son ejemplos y deben sustituirse. La configuración local no se sincroniza automáticamente entre dispositivos.
+## Desarrollo
+`npm install`, `npm start` y `npm run dist` (compilación en Windows).
