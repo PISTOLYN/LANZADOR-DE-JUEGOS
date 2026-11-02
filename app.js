@@ -65,5 +65,22 @@ function applyAppearance(){let c={};try{c=JSON.parse(localStorage.getItem(APPEAR
 $("changeSoundToggle").onchange=()=>{const c=JSON.parse(localStorage.getItem(APPEARANCE_KEY)||"{}");c.sound=$("changeSoundToggle").checked;c.volume=Number($("changeSoundVolume").value);localStorage.setItem(APPEARANCE_KEY,JSON.stringify(c))};
 $("changeSoundVolume").oninput=()=>{const c=JSON.parse(localStorage.getItem(APPEARANCE_KEY)||"{}");c.sound=$("changeSoundToggle").checked;c.volume=Number($("changeSoundVolume").value);localStorage.setItem(APPEARANCE_KEY,JSON.stringify(c))};
 $("resetAppearance").onclick=()=>{localStorage.removeItem(APPEARANCE_KEY);$("backgroundFile").value="";loadAppearanceControls();applyAppearance()};
-$("quitLauncherBtn").onclick=()=>{if(window.arcadeAPI?.quitLauncher)window.arcadeAPI.quitLauncher();else if(confirm("¿Deseas salir del lanzador?"))window.close()};
+const quitButton=$("quitLauncherBtn");
+if(quitButton){
+  quitButton.addEventListener("click",async e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    if(!confirm("¿Deseas cerrar ARCADE LAUNCHER?"))return;
+    quitButton.disabled=true;
+    quitButton.textContent="CERRANDO...";
+    try{
+      if(window.arcadeAPI?.quitLauncher) await window.arcadeAPI.quitLauncher();
+      else window.close();
+    }catch(error){
+      quitButton.disabled=false;
+      quitButton.textContent="SALIR ✕";
+      alert("No se pudo cerrar el programa: "+(error?.message||error));
+    }
+  });
+}
 applyAppearance();
