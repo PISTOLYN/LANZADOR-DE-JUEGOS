@@ -288,3 +288,26 @@ main{position:fixed;inset:var(--in-t) var(--in-r) var(--in-b) var(--in-l);margin
     font-size:13px!important;
   }
 }
+
+
+/* PANEL IZQUIERDO COMPACTO: las teclas quedan visibles y se pueden editar */
+#settingsModal .settings .col-izq{flex:0 0 24%!important;width:24%!important;max-width:24%!important;box-sizing:border-box!important;padding:12px 10px!important;overflow-y:auto!important;overflow-x:hidden!important;display:flex!important;flex-direction:column!important;gap:7px!important}
+#settingsModal .settings .col-izq .key-settings{width:100%!important;margin:0 0 8px!important}
+#settingsModal .settings .col-izq .key-settings h3{display:block!important;font:900 13px/1.2 Arial,sans-serif!important;margin:3px 0 7px!important;color:#fff!important}
+#settingsModal .settings .col-izq .key-settings label,#settingsModal .settings .col-izq .startup-option{display:flex!important;flex-direction:row!important;justify-content:space-between!important;align-items:center!important;gap:5px!important;width:100%!important;box-sizing:border-box!important;padding:7px 8px!important;margin:0 0 6px!important;border-radius:8px!important;font:700 12px/1.15 Arial,sans-serif!important;min-height:36px!important;text-align:left!important}
+#settingsModal .settings .col-izq .key-settings label input[data-key]{flex:0 0 76px!important;width:76px!important;min-width:76px!important;height:29px!important;min-height:29px!important;padding:3px!important;border:2px solid #fff!important;border-radius:5px!important;background:#fff!important;color:#142033!important;font:900 11px/1 Arial,sans-serif!important;cursor:pointer!important;pointer-events:auto!important;position:relative!important;z-index:4!important}
+#settingsModal .settings .col-izq .key-settings label input[data-key].recording{background:#fff2a8!important;border-color:#e31b68!important;color:#a00042!important;box-shadow:0 0 0 3px #e31b6855!important}
+#settingsModal .settings .col-izq .key-settings p{display:block!important;font:11px/1.25 Arial,sans-serif!important;margin:4px 0 7px!important}
+#settingsModal .settings .col-izq .key-settings button{font:800 11px/1.2 Arial,sans-serif!important;padding:7px 5px!important}
+#settingsModal .settings .col-izq .key-settings input[type=file]{max-width:115px!important;font-size:10px!important}
+#settingsModal .settings .col-izq .key-settings input[type=range]{width:78px!important}
+#settingsModal .settings .col-izq .startup-option small{display:none!important}
+#settingsModal .settings .col-der{flex:1 1 0!important;width:0!important;min-width:0!important}
+#settingsModal .settings .col-izq input,#settingsModal .settings .col-izq button{pointer-events:auto!important}
+@media(max-width:900px){#settingsModal .settings .col-izq{width:100%!important;max-width:100%!important;flex:0 0 auto!important;max-height:38vh!important}#settingsModal .settings .col-der{width:100%!important;min-width:0!important}}
+
+/* Portada extendida al cuadro completo de la sala */
+.stage,.game-card,.monitor,.monitor-screen,#cover{position:absolute!important;left:0!important;top:0!important;right:0!important;bottom:0!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important}
+#cover{display:block!important;background-position:center center!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+#cover.has-cover{background-size:100% 100%!important;background-position:center center!important}
+#cover strong,#cover small{display:none!important}
