@@ -165,16 +165,16 @@ function fullscreenScript(pid) {
     "'@",
     "[W]::SetProcessDPIAware() | Out-Null",
     "$p=Get-Process -Id " + pid + " -ErrorAction SilentlyContinue",
-    "for($i=0;$i -lt 40 -and $p -and $p.MainWindowHandle -eq 0;$i++){Start-Sleep -Milliseconds 500;$p.Refresh()}",
+    "for($i=0;$i -lt 80 -and $p -and $p.MainWindowHandle -eq 0;$i++){Start-Sleep -Milliseconds 500;$p.Refresh()}",
     "if($p -and $p.MainWindowHandle -ne 0){",
     "  Start-Sleep -Milliseconds 1500; $p.Refresh(); $h=$p.MainWindowHandle",
     "  [W]::ShowWindow($h,9) | Out-Null",
     "  $s=[System.Windows.Forms.Screen]::FromHandle($h).Bounds",
     "  $st=[W]::GetWindowLong($h,-16)",
-    "  $st=$st -band (-bnot 0x00CF0000)",
+    "  $st=$st -band (-bnot 0x00CF0000); $st=$st -bor 0x80000000",
     "  [W]::SetWindowLong($h,-16,$st) | Out-Null",
-    "  [W]::SetWindowPos($h,[IntPtr]::Zero,$s.X,$s.Y,$s.Width,$s.Height,0x0064) | Out-Null",
-    "  [W]::SetForegroundWindow($h) | Out-Null",
+    "  [W]::SetWindowPos($h,[IntPtr](-1),$s.X,$s.Y,$s.Width,$s.Height,0x0060) | Out-Null",
+    "  [W]::SetForegroundWindow($h) | Out-Null; Start-Sleep -Milliseconds 700; [W]::SetWindowPos($h,[IntPtr](-1),$s.X,$s.Y,$s.Width,$s.Height,0x0060) | Out-Null",
     "}"
   ].join("\n");
 }
